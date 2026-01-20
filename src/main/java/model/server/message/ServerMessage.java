@@ -1,6 +1,7 @@
 package model.server.message;
 
 import com.jme3.network.AbstractMessage;
+import model.client.message.ServerMessageInterpreter;
 
 /**
  * An abstract base class for server messages used in network transfer.
