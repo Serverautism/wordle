@@ -12,6 +12,7 @@ import java.io.IOException;
 public class PlayerAuthDTO {
     static final System.Logger LOGGER = System.getLogger(PlayerAuthDTO.class.getName());
 
+    private String name;
     private String password;
     private int score;
 
@@ -60,5 +61,9 @@ public class PlayerAuthDTO {
 
     public int getScore() {
         return score;
+    }
+
+    public String getName() {
+        return name;
     }
 }

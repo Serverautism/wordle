@@ -7,6 +7,7 @@ import com.jme3.network.serializing.Serializer;
 import com.jme3.system.JmeContext;
 import model.client.message.ClientMessage;
 import model.client.message.LoginMessage;
+import model.server.Player;
 import model.server.config.ServerGameConfig;
 import model.server.logic.ServerGameLogic;
 import model.server.message.ServerMessage;
@@ -78,8 +79,31 @@ public class WordleServer extends SimpleApplication implements MessageListener<H
 
     }
 
+    /**
+     * The main server loop that continuously processes pending messages until a stop request is received.
+     */
+    @Override
+    public void simpleUpdate(float tpf) {
+        processNextMessage();
+    }
+
+    /**
+     * Processes the next pending message from the queue and delegates it to the game logic for handling.
+     * If interrupted while waiting, logs the interruption and re-interrupts the thread.
+     */
+    private void processNextMessage() {
+        try {
+            pendingMessages.take().process(logic);
+        }
+        catch (InterruptedException ex) {
+            LOGGER.log(System.Logger.Level.INFO, "Interrupted while waiting for messages");
+            // Restore the interrupt flag and continue
+            Thread.currentThread().interrupt();
+        }
+    }
+
     private void startServer() throws IOException{
-        LOGGER.log(System.Logger.Level.INFO, "Starting server..."); //NON-NLS
+        LOGGER.log(System.Logger.Level.INFO, "Starting server...");
         server = Network.createServer(port);
         initializeSerializables();
         server.start();
@@ -121,7 +145,8 @@ public class WordleServer extends SimpleApplication implements MessageListener<H
      */
     @Override
     public void connectionAdded(Server server, HostedConnection hostedConnection) {
-
+        LOGGER.log(System.Logger.Level.INFO, "new connection {0}", hostedConnection);
+        logic.addPlayer(hostedConnection.getId());
     }
 
     /**
@@ -130,7 +155,14 @@ public class WordleServer extends SimpleApplication implements MessageListener<H
      */
     @Override
     public void connectionRemoved(Server server, HostedConnection hostedConnection) {
-
+        LOGGER.log(System.Logger.Level.INFO, "connection closed: {0}", hostedConnection);
+        final Player player = logic.getPlayerById(hostedConnection.getId());
+        if (player == null)
+            LOGGER.log(System.Logger.Level.INFO, "closed connection does not belong to an active player");
+        else {
+            LOGGER.log(System.Logger.Level.INFO, "closed connection belongs to {0}", player);
+            stop();
+        }
     }
 
     /**
@@ -143,7 +175,7 @@ public class WordleServer extends SimpleApplication implements MessageListener<H
      */
     @Override
     public void messageReceived(HostedConnection hostedConnection, Message message) {
-        LOGGER.log(System.Logger.Level.INFO, "message received from {0}: {1}", hostedConnection.getId(), message); //NON-NLS
+        LOGGER.log(System.Logger.Level.INFO, "message received from {0}: {1}", hostedConnection.getId(), message);
         if (message instanceof ClientMessage clientMessage)
             pendingMessages.add(new ReceivedMessage(clientMessage, hostedConnection.getId()));
     }
@@ -156,6 +188,27 @@ public class WordleServer extends SimpleApplication implements MessageListener<H
      */
     @Override
     public void send(int id, ServerMessage message) {
+        if (server == null || !server.isRunning()) {
+            LOGGER.log(System.Logger.Level.ERROR, "no server running when trying to send {0}", message);
+            return;
+        }
+        final HostedConnection connection = server.getConnection(id);
+        if (connection != null)
+            connection.send(message);
+        else
+            LOGGER.log(System.Logger.Level.ERROR, "there is no connection with id={0}", id);
+    }
 
+    /**
+     * Stops the server by closing all active client connections and setting a flag
+     * to exit the processing loop.
+     */
+    private void stopServer() {
+        LOGGER.log(System.Logger.Level.INFO, "close request");
+        if (server != null)
+            for (HostedConnection client : server.getConnections())
+                if (client != null)
+                    client.close("Game over");
+        stop();
     }
 }

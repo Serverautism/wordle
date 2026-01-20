@@ -49,6 +49,7 @@ public class Player {
     }
 
     private void loadStats(PlayerAuthDTO dto) {
+        name = dto.getName();
         score = dto.getScore();
     }
 
@@ -72,7 +73,7 @@ public class Player {
         return authenticated;
     }
 
-    public void setAuthenticated(boolean authenticated) {
+    private void setAuthenticated(boolean authenticated) {
         this.authenticated = authenticated;
     }
 

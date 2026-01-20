@@ -46,6 +46,10 @@ public class ServerGameLogic {
         this.state.entry();
     }
 
+    public void addPlayer (int id){
+        state.addPlayer(id);
+    }
+
     /**
      * Retrieves the game configuration.
      *

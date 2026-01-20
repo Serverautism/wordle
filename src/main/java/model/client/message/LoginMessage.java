@@ -8,16 +8,13 @@ import model.server.message.ClientMessageInterpreter;
  */
 @Serializable
 public class LoginMessage extends ClientMessage{
-    private final String name;
-    private final String password;
+    private String name;
+    private String password;
 
     /**
      * No-argument constructor for serialization purposes
      */
-    private LoginMessage(){
-        name = "";
-        password = "";
-    }
+    private LoginMessage() {}
 
     /**
      * Creates a new LoginMessage

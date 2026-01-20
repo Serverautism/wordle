@@ -9,10 +9,12 @@ import com.jme3.system.AppSettings;
 import model.client.Feature;
 import model.client.config.ClientGameConfig;
 import model.client.logic.ClientGameLogic;
+import model.client.message.ClientMessage;
 import model.client.message.LoginMessage;
 import model.client.message.ServerMessageReceiver;
 import model.client.notification.GameEventBroker;
 import model.server.message.ServerMessage;
+import org.lwjgl.system.CallbackI;
 
 import java.io.File;
 import java.io.IOException;
@@ -180,8 +182,8 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
 
     private void authenticate() {
         if (connectionProcess == null) return;
-        LOGGER.log(System.Logger.Level.INFO, "Sending authentication");
         if (connectionProcess.isDone()) {
+            LOGGER.log(System.Logger.Level.INFO, "Sending authentication");
             logic.send(new LoginMessage("josi", "1201"));
             connectionProcess = null;
         }

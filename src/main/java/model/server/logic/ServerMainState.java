@@ -38,15 +38,15 @@ public class ServerMainState extends ServerState {
      */
     @Override
     public void received(LoginMessage msg, int id) {
-        LOGGER.log(System.Logger.Level.INFO, "Client {0} is trying to authenticate");
-        Player sender = logic.getPlayerById(id);
+        LOGGER.log(System.Logger.Level.INFO, "Client {0} is trying to authenticate", id);
+        final Player sender = logic.getPlayerById(id);
         if (sender != null) {
             sender.authenticate(logic.getConfig().getUserFolder(), msg.getName(), msg.getPassword());
             if (sender.isAuthenticated()) {
-                LOGGER.log(System.Logger.Level.INFO, "Client {0} is authenticated successfully");
+                LOGGER.log(System.Logger.Level.INFO, "Client {0} is authenticated successfully with name {1}", id, sender.getName());
             } else {
-                LOGGER.log(System.Logger.Level.WARNING, "Client {0} failed authentication");
-                // client raus werfen
+                LOGGER.log(System.Logger.Level.WARNING, "Client {0} failed authentication", id);
+                //TODO: client raus werfen
             }
         }
     }

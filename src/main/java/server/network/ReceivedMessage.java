@@ -28,7 +28,7 @@ public record ReceivedMessage(ClientMessage message, int from) {
      * @param logic the server game logic that will process the message
      */
 
-    void process(ServerGameLogic logic) {
+    public void process(ServerGameLogic logic) {
         logic.receive(message, from);
     }
 }
