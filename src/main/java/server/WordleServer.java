@@ -66,10 +66,10 @@ public class WordleServer extends SimpleApplication implements MessageListener<H
      */
     public WordleServer() throws IOException {
         LOGGER.log(INFO, "Starting application");
-        logic = new ServerGameLogic(this, config);
         loadConfig();
         makeSettings();
         startServer();
+        logic = new ServerGameLogic(this, config);
     }
 
     @Override

@@ -13,6 +13,11 @@ public class ServerMainState extends ServerState {
         super(logic);
     }
 
+    @Override
+    public void entry() {
+        LOGGER.log(System.Logger.Level.INFO, "Entered State: {0}", getName());
+    }
+
     /**
      * Registers a new player in the game.
      *
