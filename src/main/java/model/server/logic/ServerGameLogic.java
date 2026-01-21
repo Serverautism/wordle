@@ -25,6 +25,11 @@ public class ServerGameLogic {
     private ServerState state = new ServerMainState(this);
 
     /**
+     *
+     */
+    private final WordleEngine wordleEngine;
+
+    /**
      * Used to send messages back to the clients.
      */
     private final ServerSender serversender;
@@ -43,7 +48,12 @@ public class ServerGameLogic {
     public ServerGameLogic(ServerSender serversender, ServerGameConfig config) {
         this.serversender = serversender;
         this.config = config;
+        wordleEngine  = new WordleEngine(config);
         this.state.entry();
+    }
+
+    public void update(float tpf) {
+        wordleEngine.update(tpf);
     }
 
     public void addPlayer (int id){

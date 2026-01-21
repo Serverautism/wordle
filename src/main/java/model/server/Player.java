@@ -2,7 +2,6 @@ package model.server;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Represents a game participant on the server side, holding a unique connection ID and a display name.

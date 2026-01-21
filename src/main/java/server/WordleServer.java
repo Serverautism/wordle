@@ -85,6 +85,7 @@ public class WordleServer extends SimpleApplication implements MessageListener<H
     @Override
     public void simpleUpdate(float tpf) {
         processNextMessage();
+        logic.update(tpf);
     }
 
     /**
