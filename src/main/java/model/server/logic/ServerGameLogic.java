@@ -104,6 +104,15 @@ public class ServerGameLogic {
     }
 
     /**
+     * Returns the current date as epoch day
+     *
+     * @return epoch day as long
+     */
+    public WordleEngine getWordleEngine() {
+        return wordleEngine;
+    }
+
+    /**
      * Receives a generic client message and forwards it to the active state.
      * <p>
      * All client messages (e.g., placements, shots) implement {@link ClientMessage}.

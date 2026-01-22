@@ -13,6 +13,11 @@ public class Player {
     private String name;
 
     /**
+     * The day the player last played the game
+     */
+    private long lastPlayDate;
+
+    /**
      * The players overall score
      */
     private int score;
@@ -22,7 +27,25 @@ public class Player {
      */
     private final int id;
 
+    /**
+     * Indicates if the player hab a valid login
+     */
     private boolean authenticated = false;
+
+    /**
+     * Indicates if the player is currently playing a game
+     */
+    private boolean gameActive = false;
+
+    /**
+     * The amount of guesses made in the current game
+     */
+    private int guessesMade;
+
+    /**
+     * The answer to the game the player is currently playing
+     */
+    private String currentAnswer;
 
     /**
      * Constructor for the Player class.
@@ -50,6 +73,13 @@ public class Player {
     private void loadStats(PlayerAuthDTO dto) {
         name = dto.getName();
         score = dto.getScore();
+        lastPlayDate = dto.getLastPlayDate();
+    }
+
+    public void startGame(String answer) {
+        gameActive = true;
+        guessesMade = 0;
+        currentAnswer = answer;
     }
 
     /**
@@ -76,10 +106,33 @@ public class Player {
         this.authenticated = authenticated;
     }
 
+    public long getLastPlayDate() {
+        return lastPlayDate;
+    }
+
+    public void setLastPlayDate(long day) {
+        //TODO: streak berechnen
+        lastPlayDate = day;
+    }
+
+    public boolean isGameActive() {
+        return gameActive;
+    }
+
+    public int getGuessesMade() {
+        return guessesMade;
+    }
+
+    public String getCurrentAnswer() {
+        return currentAnswer;
+    }
+
     /**
      * Returns a string representation of the player.
      * @return the string representation
      */
     @Override
-    public String toString() {return String.format("Player [name=%s, id=%d]", name, id);}
+    public String toString() {
+        return String.format("Player [name=%s, id=%d]", name, id);
+    }
 }

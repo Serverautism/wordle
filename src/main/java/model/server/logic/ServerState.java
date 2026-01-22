@@ -2,6 +2,7 @@ package model.server.logic;
 
 import model.client.message.ClientMessage;
 import model.client.message.LoginMessage;
+import model.client.message.StartGameMessage;
 import model.server.Player;
 import model.server.message.ClientMessageInterpreter;
 import model.server.message.ServerMessage;
@@ -77,7 +78,12 @@ abstract class ServerState implements ClientMessageInterpreter {
      * @param id the player ID of the sender
      */
     public void receive(ClientMessage msg, int id) {
-        msg.accept(this, id);
+        final Player sender = logic.getPlayerById(id);
+        if (!(msg instanceof LoginMessage) && !sender.isAuthenticated()) {
+            LOGGER.log(System.Logger.Level.WARNING, "Blocked message from unauthenticated user {0}", id);
+        } else {
+            msg.accept(this, id);
+        }
     }
 
     /**
@@ -87,6 +93,15 @@ abstract class ServerState implements ClientMessageInterpreter {
      */
     public void received(LoginMessage msg, int id) {
         LOGGER.log(System.Logger.Level.ERROR, "receiving a LoginMessage not allowed in {0}", getName());
+    }
+
+    /**
+     * Called when a StartGameMessage is received in this state.
+     * @param msg  the StartGameMessage to be processed
+     * @param id the connection ID from which the message was sent
+     */
+    public void received(StartGameMessage msg, int id) {
+        LOGGER.log(System.Logger.Level.ERROR, "receiving a StartGameMessage not allowed in {0}", getName());
     }
 
     /**

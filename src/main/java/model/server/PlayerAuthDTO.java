@@ -15,6 +15,7 @@ public class PlayerAuthDTO {
     private String name;
     private String password;
     private int score;
+    private long lastPlayDate;
 
     /**
      * Creates a PlayerAuthDTO from a Player instance
@@ -65,5 +66,9 @@ public class PlayerAuthDTO {
 
     public String getName() {
         return name;
+    }
+
+    public long getLastPlayDate() {
+        return lastPlayDate;
     }
 }

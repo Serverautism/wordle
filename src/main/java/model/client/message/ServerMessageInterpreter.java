@@ -1,6 +1,8 @@
 package model.client.message;
 
+import model.server.message.LoginResponse;
 import model.server.message.ServerMessage;
+import model.server.message.StartGameResponse;
 
 /**
  * An interface for processing server messages.
@@ -18,9 +20,16 @@ public interface ServerMessageInterpreter extends ServerMessageReceiver {
     }
 
     /**
-     * Handles a DisconnectEffectMsg message received from the server.
+     * Handles a StartGameResponse message received from the server.
      *
-     * @param msg the DisconnectEffectMsg message received
+     * @param msg the StartGameResponse message received
      */
-    //void received(DisconnectEffectMsg msg);
+    void received(StartGameResponse msg);
+
+    /**
+     * Handles a LoginResponse message received from the server.
+     *
+     * @param msg the LoginResponse message received
+     */
+    void received(LoginResponse msg);
 }

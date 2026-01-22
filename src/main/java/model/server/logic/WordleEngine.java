@@ -126,6 +126,15 @@ public class WordleEngine {
     }
 
     /**
+     * Returns the current date as epoch day
+     *
+     * @return epoch day as long
+     */
+    public long getCurrentPlayDay() {
+        return lastDate.toEpochDay();
+    }
+
+    /**
      * Loads all possible word from the configured path
      */
     private void loadWords() {

@@ -3,6 +3,8 @@ package model.client.logic;
 import java.util.*;
 import model.client.Feature;
 import model.client.message.ServerMessageInterpreter;
+import model.server.message.LoginResponse;
+import model.server.message.StartGameResponse;
 
 /**
  * Defines the behavior and state transitions for the client-side game logic.
@@ -56,12 +58,21 @@ public abstract class ClientState implements ServerMessageInterpreter {
         return Collections.emptySet();
     }
 
-//    /**
-//     * Reports the effect of a disconnect based on the server message.
-//     *
-//     * @param msg the message containing the effect of the disconnect
-//     */
-//    public void received(DisconnectEffectMsg msg) {
-//        ClientGameLogic.LOGGER.log(System.Logger.Level.ERROR, "receivedDisconnectEffectMsg not allowed in {0}", getName()); //NON-NLS
-//    }
+    /**
+     * Reports the effect of a StartGameResponse from the server message.
+     *
+     * @param msg the message received from server
+     */
+    public void received(StartGameResponse msg) {
+        ClientGameLogic.LOGGER.log(System.Logger.Level.ERROR, "received StartGameResponse not allowed in {0}", getName()); //NON-NLS
+    }
+
+    /**
+     * Reports the effect of a LoginResponse from the server message.
+     *
+     * @param msg the message received from server
+     */
+    public void received(LoginResponse msg) {
+        ClientGameLogic.LOGGER.log(System.Logger.Level.ERROR, "received LoginResponse not allowed in {0}", getName()); //NON-NLS
+    }
 }

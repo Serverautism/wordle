@@ -1,7 +1,10 @@
 package model.server.logic;
 
 import model.client.message.LoginMessage;
+import model.client.message.StartGameMessage;
 import model.server.Player;
+import model.server.message.LoginResponse;
+import model.server.message.StartGameResponse;
 
 public class ServerMainState extends ServerState {
     /**
@@ -44,6 +47,7 @@ public class ServerMainState extends ServerState {
             sender.authenticate(logic.getConfig().getUserFolder(), msg.getName(), msg.getPassword());
             if (sender.isAuthenticated()) {
                 LOGGER.log(System.Logger.Level.INFO, "Client {0} is authenticated successfully with name {1}", id, sender.getName());
+                send(sender, new LoginResponse());
             } else {
                 LOGGER.log(System.Logger.Level.WARNING, "Client {0} failed authentication", id);
                 //TODO: client raus werfen
@@ -51,5 +55,27 @@ public class ServerMainState extends ServerState {
         }
     }
 
-
+    /**
+     * Called when a StartGameMessage is received in this state.
+     * @param msg  the StartGameMessage to be processed
+     * @param id the connection ID from which the message was sent
+     */
+    @Override
+    public void received(StartGameMessage msg, int id) {
+        final Player sender = logic.getPlayerById(id);
+        LOGGER.log(System.Logger.Level.INFO, "Client {0} with name {1} is trying to start a game", id, sender.getName());
+        if (sender.isGameActive()) {
+            LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} is already in an active game", id, sender.getName());
+            return;
+        }
+        if (!(sender.getLastPlayDate() == logic.getWordleEngine().getCurrentPlayDay())) {
+            LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started first game of the day", id, sender.getName());
+            sender.setLastPlayDate(logic.getWordleEngine().getCurrentPlayDay());
+            sender.startGame(logic.getWordleEngine().getCurrentWord());
+        } else {
+            LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started game with random word", id, sender.getName());
+            sender.startGame(logic.getWordleEngine().getRandomWord());
+        }
+        send(sender, new StartGameResponse(sender.getCurrentAnswer().length()));
+    }
 }

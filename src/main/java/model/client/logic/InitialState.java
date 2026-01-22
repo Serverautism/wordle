@@ -2,6 +2,9 @@ package model.client.logic;
 
 import model.client.Feature;
 import model.client.message.LoginMessage;
+import model.client.message.StartGameMessage;
+import model.server.message.LoginResponse;
+import model.server.message.StartGameResponse;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,20 +27,17 @@ public class InitialState extends ClientState{
 
     @Override
     public void entry() {
-
     }
 
-//    /**
-//     * Sets the game details provided by the server.
-//     *
-//     * @param details the game details including map size and ships
-//     */
-//    @Override
-//    public void received(GameDetails details) {
-//        logic.initialize(details);
-//        logic.showInfoText(details.getInfoTextKey());
-//        logic.setState(new TeamEditorState(logic));
-//    }
+    /**
+     * Sets the game details provided by the server.
+     *
+     * @param msg the game details  including word length
+     */
+    @Override
+    public void received(LoginResponse msg) {
+        logic.setState(new GuessState(logic));
+    }
 
     /**
      * Returns the set of all features of this state.
