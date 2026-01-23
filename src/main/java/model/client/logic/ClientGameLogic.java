@@ -1,6 +1,7 @@
 package model.client.logic;
 
 import client.network.ClientSender;
+import model.client.CurrentSession;
 import model.client.Feature;
 import model.client.config.ClientGameConfig;
 import model.client.message.ClientMessage;
@@ -46,6 +47,11 @@ public class ClientGameLogic implements ServerMessageReceiver {
      * The network sender used to transmit client messages.
      */
     private ClientSender clientSender;
+
+    /**
+     * CurrentSession containing information
+     */
+    private CurrentSession currentSession;
 
     /**
      * The current game state.
@@ -96,6 +102,14 @@ public class ClientGameLogic implements ServerMessageReceiver {
      */
     public ClientGameConfig getGameConfig() {
         return gameConfig;
+    }
+
+    public void startNewSession(int answerLength, int guessAmount) {
+        currentSession = new CurrentSession(answerLength, guessAmount);
+    }
+
+    public CurrentSession getCurrentSession() {
+        return currentSession;
     }
 
     /**

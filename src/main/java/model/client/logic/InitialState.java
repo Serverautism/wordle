@@ -36,6 +36,12 @@ public class InitialState extends ClientState{
      */
     @Override
     public void received(LoginResponse msg) {
+        logic.send(new StartGameMessage());
+    }
+
+    @Override
+    public void received(StartGameResponse msg) {
+        logic.startNewSession(msg.getWordLength(), msg.getAllowedGuesses());
         logic.setState(new GuessState(logic));
     }
 

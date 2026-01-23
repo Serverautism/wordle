@@ -35,6 +35,15 @@ public class StartGameResponse extends ServerMessage {
     }
 
     /**
+     * Returns the maximum amount of guesses for this wordle
+     *
+     * @return the number of guesses as int
+     */
+    public int getAllowedGuesses() {
+        return 6;
+    }
+
+    /**
      * Accepts a visitor for processing this message.
      *
      * @param interpreter the visitor to be used for processing

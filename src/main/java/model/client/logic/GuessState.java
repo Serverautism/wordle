@@ -1,14 +1,21 @@
 package model.client.logic;
 
+import model.client.Feature;
 import model.client.message.GuessMessage;
 import model.client.notification.BackspacePressedEvent;
 import model.client.notification.EnterPressedEvent;
 import model.client.notification.LetterPressedEvent;
+import model.server.message.StartGameResponse;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents the state where the client is able to submit a guess
  */
 public class GuessState extends ClientState {
+    private Set<Feature> FEATURE = new HashSet<>();
+
     /**
      * Constructs a new GuessState.
      *
@@ -36,5 +43,15 @@ public class GuessState extends ClientState {
     @Override
     public void receivedEvent(BackspacePressedEvent event) {
 
+    }
+
+    /**
+     * Returns the set of all features of this state.
+     *
+     * @return a set of features.
+     */
+    @Override
+    public Set<Feature> getFeatures() {
+        return FEATURE;
     }
 }
