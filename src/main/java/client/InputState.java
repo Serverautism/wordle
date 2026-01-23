@@ -63,6 +63,8 @@ public class InputState extends AbstractAppState {
         im.addMapping("X", new KeyTrigger(KeyInput.KEY_X));
         im.addMapping("Y", new KeyTrigger(KeyInput.KEY_Y));
         im.addMapping("Z", new KeyTrigger(KeyInput.KEY_Z));
+        im.addMapping("ENTER", new KeyTrigger(KeyInput.KEY_RETURN));
+        im.addMapping("BACKSPACE", new KeyTrigger(KeyInput.KEY_BACK));
     }
 
     private void letterPressed(String name, boolean isPressed, float tpf) {
@@ -73,10 +75,16 @@ public class InputState extends AbstractAppState {
     }
 
     private void enterPressed(String name, boolean isPressed, float tpf) {
-
+        GameEventBroker eb = app.getGameLogic().getEventBroker();
+        if (isPressed) {
+            eb.notifyListeners(new LetterPressedEvent(name));
+        }
     }
 
     private void backspacePressed(String name, boolean isPressed, float tpf) {
-
+        GameEventBroker eb = app.getGameLogic().getEventBroker();
+        if (isPressed) {
+            eb.notifyListeners(new LetterPressedEvent(name));
+        }
     }
 }
