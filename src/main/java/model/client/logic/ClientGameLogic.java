@@ -77,13 +77,6 @@ public class ClientGameLogic implements ServerMessageReceiver {
     }
 
     /**
-     * @return the event broker responsible for event dispatching
-     */
-    public GameEventBroker getBroker() {
-        return eventBroker;
-    }
-
-    /**
      * @return the current state of the client state machine
      */
     public ClientState getState() {

@@ -10,11 +10,11 @@ package model.client.notification;
  * </p>
  */
 public interface GameEventListener {
-//    /**
-//     * Called when a {@link MessageEvent} has been received.
-//     *
-//     * @param event the received MessageEvent containing information
-//     *              about the message or game state
-//     */
-//    default void receivedEvent(MessageEvent event) {}
+    /**
+     * Called when a {@link LetterPressedEvent} has been received.
+     *
+     * @param event the received MessageEvent containing information
+     *              about the message or game state
+     */
+    default void receivedEvent(LetterPressedEvent event) {}
 }

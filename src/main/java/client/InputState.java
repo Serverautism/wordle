@@ -7,6 +7,8 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import model.client.notification.GameEventBroker;
+import model.client.notification.LetterPressedEvent;
 
 public class InputState extends AbstractAppState {
     /**
@@ -29,7 +31,7 @@ public class InputState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (WordleApp) app;
-        app.getInputManager().addListener((ActionListener) this::letterPressed, );
+        app.getInputManager().addListener((ActionListener) this::letterPressed, "A", "B");
     }
 
     private void createMappings() {
@@ -39,6 +41,9 @@ public class InputState extends AbstractAppState {
     }
 
     private void letterPressed(String name, boolean isPressed, float tpf) {
-
+        GameEventBroker eb = app.getGameLogic().getEventBroker();
+        if (isPressed) {
+            eb.notifyListeners(new LetterPressedEvent(name));
+        }
     }
 }
