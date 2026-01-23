@@ -1,5 +1,8 @@
 package model.client.logic;
 
+import model.client.message.GuessMessage;
+import model.client.notification.BackspacePressedEvent;
+import model.client.notification.EnterPressedEvent;
 import model.client.notification.LetterPressedEvent;
 
 /**
@@ -22,6 +25,16 @@ public class GuessState extends ClientState {
 
     @Override
     public void receivedEvent(LetterPressedEvent event) {
+
+    }
+
+    @Override
+    public void receivedEvent(EnterPressedEvent event) {
+        logic.send(new GuessMessage());
+    }
+
+    @Override
+    public void receivedEvent(BackspacePressedEvent event) {
 
     }
 }
