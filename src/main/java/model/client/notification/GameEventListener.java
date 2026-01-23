@@ -13,8 +13,22 @@ public interface GameEventListener {
     /**
      * Called when a {@link LetterPressedEvent} has been received.
      *
-     * @param event the received MessageEvent containing information
-     *              about the message or game state
+     * @param event the received LetterPressedEvent containing information
+     *              about the letter that was pressed
      */
     default void receivedEvent(LetterPressedEvent event) {}
+
+    /**
+     * Called when a {@link EnterPressedEvent} has been received.
+     *
+     * @param event the received EnterPressedEvent
+     */
+    default void receivedEvent(EnterPressedEvent event) {}
+
+    /**
+     * Called when a {@link BackspacePressedEvent} has been received.
+     *
+     * @param event the received BackspacePressedEvent
+     */
+    default void receivedEvent(BackspacePressedEvent event) {}
 }
