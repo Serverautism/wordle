@@ -71,4 +71,12 @@ public class InputState extends AbstractAppState {
             eb.notifyListeners(new LetterPressedEvent(name));
         }
     }
+
+    private void enterPressed(String name, boolean isPressed, float tpf) {
+
+    }
+
+    private void backspacePressed(String name, boolean isPressed, float tpf) {
+
+    }
 }
