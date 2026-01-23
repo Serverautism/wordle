@@ -7,6 +7,8 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import model.client.notification.BackspacePressedEvent;
+import model.client.notification.EnterPressedEvent;
 import model.client.notification.GameEventBroker;
 import model.client.notification.LetterPressedEvent;
 
@@ -33,6 +35,8 @@ public class InputState extends AbstractAppState {
         this.app = (WordleApp) app;
         createMappings();
         app.getInputManager().addListener((ActionListener) this::letterPressed, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+        app.getInputManager().addListener((ActionListener) this::backspacePressed, "BACKSPACE");
+        app.getInputManager().addListener((ActionListener) this::enterPressed, "ENTER");
     }
 
     private void createMappings() {
@@ -77,14 +81,14 @@ public class InputState extends AbstractAppState {
     private void enterPressed(String name, boolean isPressed, float tpf) {
         GameEventBroker eb = app.getGameLogic().getEventBroker();
         if (isPressed) {
-            eb.notifyListeners(new LetterPressedEvent(name));
+            eb.notifyListeners(new EnterPressedEvent());
         }
     }
 
     private void backspacePressed(String name, boolean isPressed, float tpf) {
         GameEventBroker eb = app.getGameLogic().getEventBroker();
         if (isPressed) {
-            eb.notifyListeners(new LetterPressedEvent(name));
+            eb.notifyListeners(new BackspacePressedEvent());
         }
     }
 }
