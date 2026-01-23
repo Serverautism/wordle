@@ -31,13 +31,37 @@ public class InputState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (WordleApp) app;
-        app.getInputManager().addListener((ActionListener) this::letterPressed, "A", "B");
+        app.getInputManager().addListener((ActionListener) this::letterPressed, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
     }
 
     private void createMappings() {
         InputManager im = app.getInputManager();
         im.addMapping("A", new KeyTrigger(KeyInput.KEY_A));
-
+        im.addMapping("B", new KeyTrigger(KeyInput.KEY_B));
+        im.addMapping("C", new KeyTrigger(KeyInput.KEY_C));
+        im.addMapping("D", new KeyTrigger(KeyInput.KEY_D));
+        im.addMapping("E", new KeyTrigger(KeyInput.KEY_E));
+        im.addMapping("F", new KeyTrigger(KeyInput.KEY_F));
+        im.addMapping("G", new KeyTrigger(KeyInput.KEY_G));
+        im.addMapping("H", new KeyTrigger(KeyInput.KEY_H));
+        im.addMapping("I", new KeyTrigger(KeyInput.KEY_I));
+        im.addMapping("J", new KeyTrigger(KeyInput.KEY_J));
+        im.addMapping("K", new KeyTrigger(KeyInput.KEY_K));
+        im.addMapping("L", new KeyTrigger(KeyInput.KEY_L));
+        im.addMapping("M", new KeyTrigger(KeyInput.KEY_M));
+        im.addMapping("N", new KeyTrigger(KeyInput.KEY_N));
+        im.addMapping("O", new KeyTrigger(KeyInput.KEY_O));
+        im.addMapping("P", new KeyTrigger(KeyInput.KEY_P));
+        im.addMapping("Q", new KeyTrigger(KeyInput.KEY_Q));
+        im.addMapping("R", new KeyTrigger(KeyInput.KEY_R));
+        im.addMapping("S", new KeyTrigger(KeyInput.KEY_S));
+        im.addMapping("T", new KeyTrigger(KeyInput.KEY_T));
+        im.addMapping("U", new KeyTrigger(KeyInput.KEY_U));
+        im.addMapping("V", new KeyTrigger(KeyInput.KEY_V));
+        im.addMapping("W", new KeyTrigger(KeyInput.KEY_W));
+        im.addMapping("X", new KeyTrigger(KeyInput.KEY_X));
+        im.addMapping("Y", new KeyTrigger(KeyInput.KEY_Y));
+        im.addMapping("Z", new KeyTrigger(KeyInput.KEY_Z));
     }
 
     private void letterPressed(String name, boolean isPressed, float tpf) {
