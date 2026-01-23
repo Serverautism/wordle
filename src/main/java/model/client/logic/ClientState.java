@@ -3,6 +3,7 @@ package model.client.logic;
 import java.util.*;
 import model.client.Feature;
 import model.client.message.ServerMessageInterpreter;
+import model.client.notification.GameEventListener;
 import model.server.message.LoginResponse;
 import model.server.message.StartGameResponse;
 
@@ -10,7 +11,7 @@ import model.server.message.StartGameResponse;
  * Defines the behavior and state transitions for the client-side game logic.
  * Different states of the game logic implement this interface to handle various game events and actions.
  */
-public abstract class ClientState implements ServerMessageInterpreter {
+public abstract class ClientState implements ServerMessageInterpreter, GameEventListener {
     /**
      * The game logic object.
      */

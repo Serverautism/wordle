@@ -31,6 +31,7 @@ public class InputState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (WordleApp) app;
+        createMappings();
         app.getInputManager().addListener((ActionListener) this::letterPressed, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
     }
 

@@ -133,7 +133,7 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
         flyCam.setEnabled(false);
         stateManager.detach(stateManager.getState(StatsAppState.class));
         stateManager.detach(stateManager.getState(DebugKeysAppState.class));
-        //stateManager.attachAll(new InputState(), soundState, emoteState, musicState, editorState, battleState, placingState, arenaState, messageState);
+        stateManager.attachAll(new InputState());
     }
 
     /**
