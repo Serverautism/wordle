@@ -22,6 +22,18 @@ public class ServerGameConfig extends Config {
     private String guessListPath;
 
     /**
+     * The amount of points gaines for solving the daily wordle.
+     */
+    @Property("points.daily")
+    private int pointsDaily = 10;
+
+    /**
+     * The amount of points gaines for solving a random wordle.
+     */
+    @Property("points.random")
+    private int pointsRandom = 1;
+
+    /**
      * Path to the folder containing the user files.
      */
     @Property("user.folder")
@@ -41,5 +53,13 @@ public class ServerGameConfig extends Config {
 
     public int getPort() {
         return port;
+    }
+
+    public int getPointsDaily() {
+        return pointsDaily;
+    }
+
+    public int getPointsRandom() {
+        return pointsRandom;
     }
 }

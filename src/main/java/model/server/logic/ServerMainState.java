@@ -76,15 +76,20 @@ public class ServerMainState extends ServerState {
             LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started first game of the day", id, sender.getName());
             sender.setLastPlayDate(logic.getWordleEngine().getCurrentPlayDay());
             sender.startGame(logic.getWordleEngine().getCurrentWord(), 6);
+            sender.setPointsToGain(logic.getConfig().getPointsDaily());
         } else {
             LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started game with random word", id, sender.getName());
             sender.startGame(logic.getWordleEngine().getRandomWord(), 6);
+            sender.setPointsToGain(logic.getConfig().getPointsRandom());
         }
         send(sender, new StartGameResponse(sender.getCurrentAnswer().length()));
     }
 
     /**
      *
+     *
+     * @param msg  the GuessMessage to be processed
+     * @param id the connection ID from which the message was sent
      */
     @Override
     public void received(GuessMessage msg, int id) {
@@ -95,10 +100,16 @@ public class ServerMainState extends ServerState {
         }
         if (sender.canSubmitGuess() && logic.getWordleEngine().isValidWord(msg.getGuess())) {
             LOGGER.log(System.Logger.Level.INFO, "Client {0} with name {1}: accepted guess {2} (answer is {3})", id, sender.getName(), msg.getGuess(), sender.getCurrentAnswer());
+            sender.submitGuess(msg.getGuess());
             send(sender, new GuessResponse(true, logic.getWordleEngine().evaluateGuess(msg.getGuess(), sender.getCurrentAnswer())));
+            if (msg.getGuess().equals(sender.getCurrentAnswer())) {
+                LOGGER.log(System.Logger.Level.INFO, "Client {0} with name {1}: guessed the correct answer", id, sender.getName());
+                sender.endGame();
+            }
         } else {
             LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1}: rejected guess {2} (answer is {3})", id, sender.getName(), msg.getGuess(), sender.getCurrentAnswer());
             send(sender, new GuessResponse(false, new ArrayList<>()));
         }
+        LOGGER.log(System.Logger.Level.INFO, "Client {0} with name {1} has {2} guesses remaining", id, sender.getName(), sender.getRemainingGuesses());
     }
 }

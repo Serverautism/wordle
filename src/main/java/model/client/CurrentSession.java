@@ -69,9 +69,11 @@ public class CurrentSession {
      * Submits and clears the current guess and adds positions information
      */
     public void submitGuess(List<CharacterPosition> positions) {
-        submittedGuesses.add(unsubmittedGuess);
-        unsubmittedGuess = "";
-        this.positions.add(positions);
+        if (canSubmitGuess()) {
+            submittedGuesses.add(unsubmittedGuess);
+            unsubmittedGuess = "";
+            this.positions.add(positions);
+        }
     }
 
     /**
@@ -115,5 +117,9 @@ public class CurrentSession {
 
     private boolean canAddCharacter() {
         return unsubmittedGuess.length() < answerLength;
+    }
+
+    public boolean canSubmitGuess() {
+        return remainingGuesses() > 0;
     }
 }

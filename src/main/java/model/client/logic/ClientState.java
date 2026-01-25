@@ -37,6 +37,14 @@ public abstract class ClientState implements ServerMessageInterpreter, GameEvent
     }
 
     /**
+     * Method to be overridden by subclasses for pre-exit initialization.
+     * By default, it does nothing, but it can be overridden in derived states.
+     */
+    void exit(){
+        // Default implementation does nothing
+    }
+
+    /**
      * Update method for this state
      *
      * @param delta time per frame

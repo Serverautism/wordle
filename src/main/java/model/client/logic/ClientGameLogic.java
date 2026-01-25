@@ -125,7 +125,8 @@ public class ClientGameLogic implements ServerMessageReceiver {
      * @param newState the new client state to transition into
      */
     public void setState(ClientState newState) {
-        LOGGER.log(System.Logger.Level.INFO, "state transition {0} --> {1}", state.getName(), newState.getName()); //NON-NLS
+        LOGGER.log(System.Logger.Level.INFO, "state transition {0} --> {1}", state.getName(), newState.getName());
+        state.exit();
         state = newState;
         state.entry();
     }

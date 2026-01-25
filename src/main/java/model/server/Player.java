@@ -23,6 +23,11 @@ public class Player {
     private int score;
 
     /**
+     * Points the player could win when solving this wordle
+     */
+    private int pointsToGain = 1;
+
+    /**
      * The unique connection ID of the player.
      */
     private final int id;
@@ -88,6 +93,11 @@ public class Player {
         maxGuessAmount = maxGuesses;
     }
 
+    public void endGame() {
+        //TODO: score hinzufügen
+        gameActive = false;
+    }
+
     /**
      * Gets the display name of the player.
      * @return the name
@@ -129,6 +139,10 @@ public class Player {
         return guessesMade;
     }
 
+    public int getRemainingGuesses() {
+        return maxGuessAmount - guessesMade;
+    }
+
     public boolean canSubmitGuess() {
         return guessesMade < maxGuessAmount;
     }
@@ -140,6 +154,10 @@ public class Player {
 
     public String getCurrentAnswer() {
         return currentAnswer;
+    }
+
+    public void setPointsToGain(int pointsToGain) {
+        this.pointsToGain = pointsToGain;
     }
 
     /**
