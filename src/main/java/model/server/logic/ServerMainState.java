@@ -106,7 +106,9 @@ public class ServerMainState extends ServerState {
             send(sender, new GuessResponse(true, logic.getWordleEngine().evaluateGuess(msg.getGuess(), sender.getCurrentAnswer())));
             if (msg.getGuess().equals(sender.getCurrentAnswer())) {
                 LOGGER.log(System.Logger.Level.INFO, "Client {0} with name {1}: guessed the correct answer", id, sender.getName());
-                sender.endGame();
+                sender.endGame(true);
+            } else if (!sender.canSubmitGuess()) {
+                sender.endGame(false);
             }
         } else {
             LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1}: rejected guess {2} (answer is {3})", id, sender.getName(), msg.getGuess(), sender.getCurrentAnswer());

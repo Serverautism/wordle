@@ -93,7 +93,7 @@ public class Player {
         maxGuessAmount = maxGuesses;
     }
 
-    public void endGame() {
+    public void endGame(boolean won) {
         //TODO: score hinzufügen
         gameActive = false;
     }
