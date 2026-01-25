@@ -1,6 +1,7 @@
 package client.network;
 
 import com.jme3.network.*;
+import com.jme3.network.message.SerializerRegistrationsMessage;
 import model.client.message.ClientMessage;
 import model.client.message.ServerMessageReceiver;
 import model.client.notification.GameEventBroker;
@@ -17,7 +18,12 @@ public class ClientNetworkSupport implements MessageListener<Client>, ClientStat
     /**
      * Hostname for connecting to a local server.
      */
-    public static final String LOCALHOST = "localhost"; //NON-NLS
+    public static final String LOCALHOST = "localhost";
+
+    /**
+     * Indicates if the network component is ready for communication
+     */
+    private boolean isReady = false;
 
     /**
      * The receiver that handles messages sent from the server.
@@ -53,6 +59,16 @@ public class ClientNetworkSupport implements MessageListener<Client>, ClientStat
      */
     public boolean isConnected() {
         return client != null && client.isConnected();
+    }
+
+    /**
+     * Checks whether the client is currently connected to the server and ready for communication.
+     *
+     * @return {@code true} if the client is not {@code null} and is connected to the server,
+     * {@code false} otherwise.
+     */
+    public boolean isReady() {
+        return isReady && isConnected();
     }
 
     /**
@@ -104,8 +120,11 @@ public class ClientNetworkSupport implements MessageListener<Client>, ClientStat
     @Override
     public void messageReceived(Client client, Message message) {
         LOGGER.log(System.Logger.Level.INFO, "message received from server: {0}", message); //NON-NLS
-        if (message instanceof ServerMessage serverMessage)
+        if (message instanceof ServerMessage serverMessage) {
             receiver.receive(serverMessage);
+        } else if (message instanceof SerializerRegistrationsMessage) {
+            isReady = true;
+        }
     }
 
     /**
