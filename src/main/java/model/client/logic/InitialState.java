@@ -3,6 +3,7 @@ package model.client.logic;
 import model.client.Feature;
 import model.client.message.LoginMessage;
 import model.client.message.StartGameMessage;
+import model.server.message.ConnectionResponse;
 import model.server.message.LoginResponse;
 import model.server.message.StartGameResponse;
 
@@ -27,6 +28,16 @@ public class InitialState extends ClientState{
 
     @Override
     public void entry() {
+    }
+
+    /**
+     * Sends authentication request when server responded to the connection.
+     *
+     * @param msg the ConnectionResponse message
+     */
+    @Override
+    public void received(ConnectionResponse msg) {
+        logic.send(new LoginMessage("josi", "1201"));
     }
 
     /**

@@ -4,6 +4,7 @@ import model.client.message.GuessMessage;
 import model.client.message.LoginMessage;
 import model.client.message.StartGameMessage;
 import model.server.Player;
+import model.server.message.ConnectionResponse;
 import model.server.message.GuessResponse;
 import model.server.message.LoginResponse;
 import model.server.message.StartGameResponse;
@@ -36,6 +37,7 @@ public class ServerMainState extends ServerState {
         final Player player = new Player("player " + playerNumber, id);
         LOGGER.log(System.Logger.Level.INFO, "adding {0}");
         logic.getPlayers().add(player);
+        send(player, new ConnectionResponse());
     }
 
     /**

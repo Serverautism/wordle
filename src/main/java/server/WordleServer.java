@@ -137,6 +137,7 @@ public class WordleServer extends SimpleApplication implements MessageListener<H
         Serializer.registerClass(StartGameResponse.class);
         Serializer.registerClass(DisconnectResponse.class);
         Serializer.registerClass(GuessResponse.class);
+        Serializer.registerClass(ConnectionResponse.class);
     }
 
     /**

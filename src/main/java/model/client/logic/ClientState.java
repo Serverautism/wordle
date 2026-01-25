@@ -4,10 +4,7 @@ import java.util.*;
 import model.client.Feature;
 import model.client.message.ServerMessageInterpreter;
 import model.client.notification.GameEventListener;
-import model.server.message.DisconnectResponse;
-import model.server.message.GuessResponse;
-import model.server.message.LoginResponse;
-import model.server.message.StartGameResponse;
+import model.server.message.*;
 
 /**
  * Defines the behavior and state transitions for the client-side game logic.
@@ -103,5 +100,14 @@ public abstract class ClientState implements ServerMessageInterpreter, GameEvent
      */
     public void received(GuessResponse msg) {
         ClientGameLogic.LOGGER.log(System.Logger.Level.ERROR, "received GuessResponse not allowed in {0}", getName()); //NON-NLS
+    }
+
+    /**
+     * Reports the effect of a ConnectionResponse from the server message.
+     *
+     * @param msg the message received from server
+     */
+    public void received(ConnectionResponse msg) {
+        ClientGameLogic.LOGGER.log(System.Logger.Level.ERROR, "received ConnectionResponse not allowed in {0}", getName()); //NON-NLS
     }
 }

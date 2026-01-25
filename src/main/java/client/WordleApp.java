@@ -182,9 +182,9 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
 
     private void authenticate() {
         if (connectionProcess == null) return;
-        if (connectionProcess.isDone() && network.isReady()) {
+        if (connectionProcess.isDone()) {
             LOGGER.log(System.Logger.Level.INFO, "Sending authentication");
-            logic.send(new LoginMessage("josi", "1201"));
+            //logic.send(new LoginMessage("josi", "1201"));
             connectionProcess = null;
         }
     }
