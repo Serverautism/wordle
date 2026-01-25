@@ -5,17 +5,18 @@ import model.client.message.GuessMessage;
 import model.client.notification.BackspacePressedEvent;
 import model.client.notification.EnterPressedEvent;
 import model.client.notification.LetterPressedEvent;
+import model.client.notification.StartGameEvent;
 import model.general.config.CharacterPosition;
 import model.server.message.GuessResponse;
 
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.Set;
 
 /**
  * Represents the state where the client is able to submit a guess
  */
 public class GuessState extends ClientState {
-    private Set<Feature> FEATURE = new HashSet<>();
+    private Set<Feature> FEATURE = EnumSet.of(Feature.WORDLE);
 
     /**
      * Constructs a new GuessState.
@@ -29,6 +30,7 @@ public class GuessState extends ClientState {
     @Override
     public void entry() {
         logic.getEventBroker().addListener(this);
+        logic.getEventBroker().notifyListeners(new StartGameEvent(logic.getCurrentSession()));
     }
 
     @Override

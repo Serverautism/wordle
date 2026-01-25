@@ -31,4 +31,11 @@ public interface GameEventListener {
      * @param event the received BackspacePressedEvent
      */
     default void receivedEvent(BackspacePressedEvent event) {}
+
+    /**
+     * Called when a {@link StartGameEvent} has been received.
+     *
+     * @param event the received StartGameEvent
+     */
+    default void receivedEvent(StartGameEvent event) {}
 }

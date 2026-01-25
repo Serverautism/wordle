@@ -122,4 +122,12 @@ public class CurrentSession {
     public boolean canSubmitGuess() {
         return remainingGuesses() > 0;
     }
+
+    public int getAnswerLength() {
+        return answerLength;
+    }
+
+    public int getMaxGuessAmount() {
+        return maxGuessAmount;
+    }
 }

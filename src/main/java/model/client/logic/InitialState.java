@@ -7,6 +7,7 @@ import model.server.message.ConnectionResponse;
 import model.server.message.LoginResponse;
 import model.server.message.StartGameResponse;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
  * authentication confirmation from the server.
  */
 public class InitialState extends ClientState{
-    private Set<Feature> FEATURE = new HashSet<>();
+    private Set<Feature> FEATURE = EnumSet.of(Feature.WORDLE);
 
     /**
      * Constructs a new InitialState with the specified ClientGameLogic.

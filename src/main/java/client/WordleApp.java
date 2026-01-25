@@ -46,6 +46,11 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
     private ClientNetworkSupport network;
 
     /**
+     * AppState that renders the graphics when playing a wordle game
+     */
+    private WordleAppState wordleAppState = new WordleAppState();
+
+    /**
      * Executor service for handling asynchronous tasks.
      */
     private ExecutorService executor;
@@ -113,9 +118,6 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
         setPauseOnLostFocus(false);
         inputManager.deleteMapping(INPUT_MAPPING_EXIT);
         inputManager.setCursorVisible(false);
-
-        //inputManager.addMapping(WKEY,  new KeyTrigger(KeyInput.KEY_W));
-
         setupStates();
     }
 
@@ -133,7 +135,7 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
         flyCam.setEnabled(false);
         stateManager.detach(stateManager.getState(StatsAppState.class));
         stateManager.detach(stateManager.getState(DebugKeysAppState.class));
-        stateManager.attachAll(new InputState());
+        stateManager.attachAll(new InputState(), wordleAppState);
     }
 
     /**
@@ -155,7 +157,7 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
      */
     private void checkStates() {
         final Set<Feature> features = logic.getFeatures();
-        //editorState.setEnabled(features.contains(Feature.EDITOR));
+        wordleAppState.setEnabled(features.contains(Feature.WORDLE));
     }
 
     /**
