@@ -5,12 +5,11 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.network.*;
 import com.jme3.network.serializing.Serializer;
 import com.jme3.system.JmeContext;
-import model.client.message.ClientMessage;
-import model.client.message.LoginMessage;
-import model.client.message.StartGameMessage;
+import model.client.message.*;
 import model.server.Player;
 import model.server.config.ServerGameConfig;
 import model.server.logic.ServerGameLogic;
+import model.server.message.DisconnectResponse;
 import model.server.message.LoginResponse;
 import model.server.message.ServerMessage;
 import model.server.message.StartGameResponse;
@@ -132,9 +131,12 @@ public class WordleServer extends SimpleApplication implements MessageListener<H
     private void initializeSerializables() {
         Serializer.registerClass(LoginMessage.class);
         Serializer.registerClass(StartGameMessage.class);
+        Serializer.registerClass(GuessMessage.class);
+        Serializer.registerClass(DisconnectMessage.class);
 
         Serializer.registerClass(LoginResponse.class);
         Serializer.registerClass(StartGameResponse.class);
+        Serializer.registerClass(DisconnectResponse.class);
     }
 
     /**
@@ -145,6 +147,8 @@ public class WordleServer extends SimpleApplication implements MessageListener<H
     private void registerListeners() {
         server.addMessageListener(this, LoginMessage.class);
         server.addMessageListener(this, StartGameMessage.class);
+        server.addMessageListener(this, GuessMessage.class);
+        server.addMessageListener(this, DisconnectMessage.class);
         server.addConnectionListener(this);
     }
 

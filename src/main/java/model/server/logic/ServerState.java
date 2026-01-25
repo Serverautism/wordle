@@ -1,8 +1,6 @@
 package model.server.logic;
 
-import model.client.message.ClientMessage;
-import model.client.message.LoginMessage;
-import model.client.message.StartGameMessage;
+import model.client.message.*;
 import model.server.Player;
 import model.server.message.ClientMessageInterpreter;
 import model.server.message.ServerMessage;
@@ -102,6 +100,24 @@ abstract class ServerState implements ClientMessageInterpreter {
      */
     public void received(StartGameMessage msg, int id) {
         LOGGER.log(System.Logger.Level.ERROR, "receiving a StartGameMessage not allowed in {0}", getName());
+    }
+
+    /**
+     * Called when a GuessMessage is received in this state.
+     * @param msg  the GuessMessage to be processed
+     * @param id the connection ID from which the message was sent
+     */
+    public void received(GuessMessage msg, int id) {
+        LOGGER.log(System.Logger.Level.ERROR, "receiving a GuessMessage not allowed in {0}", getName());
+    }
+
+    /**
+     * Called when a DisconnectMessage is received in this state.
+     * @param msg  the DisconnectMessage to be processed
+     * @param id the connection ID from which the message was sent
+     */
+    public void received(DisconnectMessage msg, int id) {
+        LOGGER.log(System.Logger.Level.ERROR, "receiving a DisconnectMessage not allowed in {0}", getName());
     }
 
     /**

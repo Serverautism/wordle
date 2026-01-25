@@ -91,4 +91,29 @@ public class CurrentSession {
     public int remainingGuesses() {
         return maxGuessAmount - guessesMade();
     }
+
+    /**
+     * Adds a letter to the current unsubmitted guess
+     *
+     * @param character the letter to be added as char
+     */
+    public void addCharacter(char character) {
+        if (canAddCharacter()) {
+            unsubmittedGuess += character;
+            unsubmittedGuess = unsubmittedGuess.toUpperCase();
+        }
+    }
+
+    /**
+     * Removes the last char from the current unsubmitted guess
+     */
+    public void removeLastCharacter() {
+        if (!unsubmittedGuess.isEmpty()) {
+            unsubmittedGuess = unsubmittedGuess.substring(0, unsubmittedGuess.length() - 1);
+        }
+    }
+
+    private boolean canAddCharacter() {
+        return unsubmittedGuess.length() < answerLength;
+    }
 }

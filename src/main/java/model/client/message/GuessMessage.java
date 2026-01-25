@@ -32,6 +32,6 @@ public class GuessMessage extends ClientMessage {
      */
     @Override
     public void accept(ClientMessageInterpreter interpreter, int id) {
-        interpreter.received(this);
+        interpreter.received(this, id);
     }
 }

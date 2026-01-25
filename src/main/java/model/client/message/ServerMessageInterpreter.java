@@ -1,5 +1,6 @@
 package model.client.message;
 
+import model.server.message.DisconnectResponse;
 import model.server.message.LoginResponse;
 import model.server.message.ServerMessage;
 import model.server.message.StartGameResponse;
@@ -32,4 +33,11 @@ public interface ServerMessageInterpreter extends ServerMessageReceiver {
      * @param msg the LoginResponse message received
      */
     void received(LoginResponse msg);
+
+    /**
+     * Handles a DisconnectResponse message received from the server.
+     *
+     * @param msg the DisconnectResponse message received
+     */
+    void received(DisconnectResponse msg);
 }

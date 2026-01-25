@@ -1,6 +1,6 @@
 package model.client.notification;
 
-public record LetterPressedEvent(String letter) implements GameEvent {
+public record LetterPressedEvent(char letter) implements GameEvent {
     /**
      * Notifies and passes GameEvent to a Listener
      *

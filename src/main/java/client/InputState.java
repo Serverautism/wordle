@@ -74,7 +74,7 @@ public class InputState extends AbstractAppState {
     private void letterPressed(String name, boolean isPressed, float tpf) {
         GameEventBroker eb = app.getGameLogic().getEventBroker();
         if (isPressed) {
-            eb.notifyListeners(new LetterPressedEvent(name));
+            eb.notifyListeners(new LetterPressedEvent(name.charAt(0)));
         }
     }
 

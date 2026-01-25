@@ -5,7 +5,6 @@ import model.client.message.GuessMessage;
 import model.client.notification.BackspacePressedEvent;
 import model.client.notification.EnterPressedEvent;
 import model.client.notification.LetterPressedEvent;
-import model.server.message.StartGameResponse;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,17 +31,21 @@ public class GuessState extends ClientState {
 
     @Override
     public void receivedEvent(LetterPressedEvent event) {
-
+        logic.getCurrentSession().addCharacter(event.letter());
+        ClientGameLogic.LOGGER.log(System.Logger.Level.INFO, event.letter());
+        ClientGameLogic.LOGGER.log(System.Logger.Level.INFO, logic.getCurrentSession().getUnsubmittedGuess());
     }
 
     @Override
     public void receivedEvent(EnterPressedEvent event) {
-        logic.send(new GuessMessage());
+        if (logic.getCurrentSession().isCurrentGuessValid()) {
+            logic.send(new GuessMessage(logic.getCurrentSession().getUnsubmittedGuess()));
+        }
     }
 
     @Override
     public void receivedEvent(BackspacePressedEvent event) {
-
+        logic.getCurrentSession().removeLastCharacter();
     }
 
     /**
