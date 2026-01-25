@@ -13,7 +13,12 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 import model.client.CurrentSession;
 import model.client.notification.GameEventListener;
+import model.client.notification.GuessSubmittedEvent;
+import model.client.notification.InputUpdateEvent;
 import model.client.notification.StartGameEvent;
+import model.general.config.CharacterPosition;
+
+import java.util.List;
 
 public class WordleAppState extends GameAppState implements GameEventListener {
     /**
@@ -38,20 +43,6 @@ public class WordleAppState extends GameAppState implements GameEventListener {
     private final Node viewNode = new Node("view");
 
     private CurrentSession gameSession;
-
-//    /**
-//     * Initializes the state by setting up the sky, lights, and other visual components.
-//     * This method is called when the state is first attached to the state manager.
-//     *
-//     * @param stateManager the state manager
-//     * @param application  the application
-//     */
-//    @Override
-//    public void initialize(AppStateManager stateManager, Application application) {
-//        super.initialize(stateManager, application);
-//
-//        viewNode.attachChild(sceneNode);
-//    }
 
     /**
      * This method is called when the state is enabled.
@@ -88,7 +79,45 @@ public class WordleAppState extends GameAppState implements GameEventListener {
     public void receivedEvent(StartGameEvent event) {
         LOGGER.log(System.Logger.Level.INFO, "StartGameEvent received by view");
         gameSession = event.session();
+        viewNode.detachAllChildren();
         initializeGuessGrid(gameSession.getMaxGuessAmount(), gameSession.getAnswerLength());
+    }
+
+    @Override
+    public void receivedEvent(GuessSubmittedEvent event) {
+        LOGGER.log(System.Logger.Level.INFO, "GuessSubmittedEvent received by view");
+        List<List<CharacterPosition>> positions = event.session().getPositions();
+        List<String> guesses = event.session().getSubmittedGuesses();
+        for (int row = 0; row < guesses.size(); row++) {
+            for (int col = 0; col < event.session().getAnswerLength(); col++) {
+                ColoredTextTile tile = guessGrid[row][col];
+                CharacterPosition positionRating = positions.get(row).get(col);
+                String text = "" + guesses.get(row).charAt(col);
+                ColorRGBA color = switch (positionRating) {
+                    case RIGHT -> GREEN;
+                    case WRONG -> YELLOW;
+                    case FUCKINGWRONG -> GREY;
+                };
+                tile.setColor(color);
+                tile.setText(text);
+            }
+        }
+    }
+
+    @Override
+    public void receivedEvent(InputUpdateEvent event) {
+        LOGGER.log(System.Logger.Level.INFO, "GuessSubmittedEvent received by view");
+        List<String> guesses = event.session().getSubmittedGuesses();
+        String currentText = event.session().getUnsubmittedGuess();
+        int row = guesses.size();
+        for (int col = 0; col < event.session().getAnswerLength(); col++) {
+            ColoredTextTile tile = guessGrid[row][col];
+            if (col < currentText.length()) {
+                tile.setText("" + currentText.charAt(col));
+            } else {
+                tile.setText("");
+            }
+        }
     }
 
     private void initializeGuessGrid(int rows, int cols) {
@@ -101,7 +130,7 @@ public class WordleAppState extends GameAppState implements GameEventListener {
                 int x = startX + col * (GUESS_TILE_SIZE + GUESS_TILE_GAP);
                 int y = startY - row * (GUESS_TILE_SIZE + GUESS_TILE_GAP);
                 Geometry g = createQuad(GUESS_TILE_SIZE, GREY);
-                BitmapText t = createText(32, "", ColorRGBA.White);
+                BitmapText t = createText(32, "", ColorRGBA.Black);
                 guessGrid[row][col] = new ColoredTextTile(GUESS_TILE_SIZE, g, t, viewNode, x, y);
             }
         }
@@ -130,7 +159,7 @@ public class WordleAppState extends GameAppState implements GameEventListener {
      * @return the BitmapText object
      */
     private BitmapText createText(int fontSize, String text, ColorRGBA color) {
-        BitmapFont font = getApp().getAssetManager().loadFont("Metropolis-Regular-32.fnt");
+        BitmapFont font = getApp().getAssetManager().loadFont("Metropolis-Bold-32.fnt");
         BitmapText t = new BitmapText(font);
         t.setText(text);
         t.setColor(color);

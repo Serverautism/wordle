@@ -1,16 +1,15 @@
 package model.client.logic;
 
 import model.client.Feature;
-import model.client.message.GuessMessage;
 import model.client.message.StartGameMessage;
 import model.client.notification.EnterPressedEvent;
 import model.server.message.StartGameResponse;
 
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.Set;
 
 public class GameOverState extends ClientState {
-    private Set<Feature> FEATURE = new HashSet<>();
+    private Set<Feature> FEATURE = EnumSet.of(Feature.WORDLE);
 
     /**
      * Constructs a client state of the specified game logic.

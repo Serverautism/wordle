@@ -38,4 +38,18 @@ public interface GameEventListener {
      * @param event the received StartGameEvent
      */
     default void receivedEvent(StartGameEvent event) {}
+
+    /**
+     * Called when a {@link GuessSubmittedEvent} has been received.
+     *
+     * @param event the received GuessSubmittedEvent
+     */
+    default void receivedEvent(GuessSubmittedEvent event) {}
+
+    /**
+     * Called when a {@link InputUpdateEvent} has been received.
+     *
+     * @param event the received InputUpdateEvent
+     */
+    default void receivedEvent(InputUpdateEvent event) {}
 }

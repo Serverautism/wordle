@@ -2,10 +2,7 @@ package model.client.logic;
 
 import model.client.Feature;
 import model.client.message.GuessMessage;
-import model.client.notification.BackspacePressedEvent;
-import model.client.notification.EnterPressedEvent;
-import model.client.notification.LetterPressedEvent;
-import model.client.notification.StartGameEvent;
+import model.client.notification.*;
 import model.general.config.CharacterPosition;
 import model.server.message.GuessResponse;
 
@@ -43,6 +40,7 @@ public class GuessState extends ClientState {
         if (msg.isAccepted()) {
             ClientGameLogic.LOGGER.log(System.Logger.Level.INFO, "guess {0} was accepted with result: {1}", logic.getCurrentSession().getUnsubmittedGuess(), msg.getPositions());
             logic.getCurrentSession().submitGuess(msg.getPositions());
+            logic.getEventBroker().notifyListeners(new GuessSubmittedEvent(logic.getCurrentSession()));
             if (msg.getPositions().stream().allMatch(c -> c == CharacterPosition.RIGHT)) {
                 logic.setState(new GameOverState(logic));
             } else if (logic.getCurrentSession().remainingGuesses() <= 0) {
@@ -58,6 +56,7 @@ public class GuessState extends ClientState {
         logic.getCurrentSession().addCharacter(event.letter());
         ClientGameLogic.LOGGER.log(System.Logger.Level.INFO, event.letter());
         ClientGameLogic.LOGGER.log(System.Logger.Level.INFO, logic.getCurrentSession().getUnsubmittedGuess());
+        logic.getEventBroker().notifyListeners(new InputUpdateEvent(logic.getCurrentSession()));
     }
 
     @Override
@@ -70,6 +69,8 @@ public class GuessState extends ClientState {
     @Override
     public void receivedEvent(BackspacePressedEvent event) {
         logic.getCurrentSession().removeLastCharacter();
+        ClientGameLogic.LOGGER.log(System.Logger.Level.INFO, logic.getCurrentSession().getUnsubmittedGuess());
+        logic.getEventBroker().notifyListeners(new InputUpdateEvent(logic.getCurrentSession()));
     }
 
     /**

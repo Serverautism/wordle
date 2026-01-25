@@ -31,7 +31,7 @@ public class ColoredTextTile {
      *
      * @param color specified color
      */
-    private void setColor(ColorRGBA color) {
+    public void setColor(ColorRGBA color) {
         geometry.getMaterial().setColor("Color", color);
     }
 
@@ -40,7 +40,7 @@ public class ColoredTextTile {
      *
      * @param text specified text
      */
-    private void setText(String text) {
+    public void setText(String text) {
         this.text.setText(text);
     }
 
@@ -52,8 +52,8 @@ public class ColoredTextTile {
      */
     private void setLocation(int x, int y) {
         geometry.setLocalTranslation(x, y, 0);
-        final float textX = x + size / 2f - text.getLineWidth() / 2f;
-        final float textY = y + size / 2f - text.getLineHeight() / 2f;
+        final float textX = x + size / 2f - text.getLineWidth() / 2f - 10;
+        final float textY = y + size / 2f + text.getLineHeight() / 2f;
         text.setLocalTranslation(textX, textY, 1);
     }
 }
