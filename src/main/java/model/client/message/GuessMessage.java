@@ -24,6 +24,10 @@ public class GuessMessage extends ClientMessage {
         this.guess = guess;
     }
 
+    public String getGuess() {
+        return guess;
+    }
+
     /**
      * Accepts a visitor for processing this message.
      *

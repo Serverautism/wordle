@@ -43,6 +43,11 @@ public class Player {
     private int guessesMade;
 
     /**
+     * The max amount of guesses for this game
+     */
+    private int maxGuessAmount;
+
+    /**
      * The answer to the game the player is currently playing
      */
     private String currentAnswer;
@@ -76,10 +81,11 @@ public class Player {
         lastPlayDate = dto.getLastPlayDate();
     }
 
-    public void startGame(String answer) {
+    public void startGame(String answer, int maxGuesses) {
         gameActive = true;
         guessesMade = 0;
         currentAnswer = answer;
+        maxGuessAmount = maxGuesses;
     }
 
     /**
@@ -121,6 +127,15 @@ public class Player {
 
     public int getGuessesMade() {
         return guessesMade;
+    }
+
+    public boolean canSubmitGuess() {
+        return guessesMade < maxGuessAmount;
+    }
+
+    public void submitGuess(String guess) {
+        //TODO: speichern
+        guessesMade += 1;
     }
 
     public String getCurrentAnswer() {

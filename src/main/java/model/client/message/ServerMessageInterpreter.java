@@ -1,9 +1,6 @@
 package model.client.message;
 
-import model.server.message.DisconnectResponse;
-import model.server.message.LoginResponse;
-import model.server.message.ServerMessage;
-import model.server.message.StartGameResponse;
+import model.server.message.*;
 
 /**
  * An interface for processing server messages.
@@ -40,4 +37,11 @@ public interface ServerMessageInterpreter extends ServerMessageReceiver {
      * @param msg the DisconnectResponse message received
      */
     void received(DisconnectResponse msg);
+
+    /**
+     * Handles a GuessResponse message received from the server.
+     *
+     * @param msg the GuessResponse message received
+     */
+    void received(GuessResponse msg);
 }

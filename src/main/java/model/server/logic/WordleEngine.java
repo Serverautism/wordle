@@ -25,12 +25,32 @@ public class WordleEngine {
     /**
      * List containing all possible words
      */
-    private List<String> words;
+    private List<String> words = new ArrayList<>();
 
     /**
      * Set containing all possible words
      */
     private final Set<String> wordsSet = new HashSet<>();
+
+    /**
+     * List containing all possible answers
+     */
+    private List<String> answers;
+
+    /**
+     * Set containing all possible answers
+     */
+    private final Set<String> answersSet = new HashSet<>();
+
+    /**
+     * List containing all possible guesses
+     */
+    private List<String> guesses;
+
+    /**
+     * Set containing all possible guesses
+     */
+    private final Set<String> guessesSet = new HashSet<>();
 
     /**
      * The word of the day
@@ -66,8 +86,8 @@ public class WordleEngine {
      * Determines daily word based on the date
      */
     private void determineDailyWord() {
-        final int index = new Random(lastDate.toEpochDay()).nextInt(words.size());
-        currentWord = words.get(index);
+        final int index = new Random(lastDate.toEpochDay()).nextInt(answers.size());
+        currentWord = answers.get(index);
         LOGGER.log(System.Logger.Level.INFO, "Today´s word is: {0}", currentWord);
     }
 
@@ -79,11 +99,11 @@ public class WordleEngine {
     }
 
     /**
-     * Returns a random word from the list
+     * Returns a random answer from the list
      */
     public String getRandomWord() {
-        final int index = new Random().nextInt(words.size());
-        return words.get(index);
+        final int index = new Random().nextInt(answers.size());
+        return answers.get(index);
     }
 
     /**
@@ -94,25 +114,31 @@ public class WordleEngine {
      * @return List of CharacterPosition for each char
      */
     public List<CharacterPosition> evaluateGuess(String guess, String answer) {
-        List<CharacterPosition> result = new ArrayList<>();
-        List<Character> evaluatedChars = new ArrayList<>();
-        for (int i = 0; i < answer.length(); i++) {
-            char guessChar = guess.toUpperCase().toCharArray()[i];
-            char answerChar = answer.toUpperCase().toCharArray()[i];
-            if (guessChar == answerChar) {
-                result.add(CharacterPosition.RIGHT);
-            } else if (answer.contains(guess)) {
-                int amountGuess = (int) guess.chars().filter(c -> c == guessChar).count();
-                int amountAnswer = (int) answer.chars().filter(c -> c == guessChar).count();
-                if (amountGuess <= amountAnswer) {
-                    result.add(CharacterPosition.WRONG);
-                }
-            } else {
-                result.add(CharacterPosition.FUCKINGWRONG);
-            }
-            evaluatedChars.add(guessChar);
+        if (!(guess.length() == answer.length())) {
+            throw new IllegalArgumentException("guess length must be the same as answer length");
         }
-        return result;
+
+        CharacterPosition[] result = new CharacterPosition[answer.length()];
+        Map<Character, Integer> unmatched = new HashMap<>();
+        for (int i = 0; i < answer.length(); i++) {
+            if (guess.charAt(i) == answer.charAt(i)) {
+                result[i] = CharacterPosition.RIGHT;
+            } else {
+                unmatched.put(answer.charAt(i), unmatched.getOrDefault(answer.charAt(i), 0) + 1);
+            }
+        }
+
+        for (int i = 0; i < answer.length(); i++) {
+            if (result[i] == CharacterPosition.RIGHT) continue;
+            if (unmatched.containsKey(guess.charAt(i))  && unmatched.get(guess.charAt(i)) > 0) {
+                result[i] = CharacterPosition.WRONG;
+                unmatched.put(guess.charAt(i), unmatched.get(guess.charAt(i)) - 1);
+            } else {
+                result[i] = CharacterPosition.FUCKINGWRONG;
+            }
+        }
+
+        return Arrays.stream(result).toList();
     }
 
     /**
@@ -138,20 +164,35 @@ public class WordleEngine {
      * Loads all possible word from the configured path
      */
     private void loadWords() {
-        final String path = config.getWordListPath();
-        LOGGER.log(System.Logger.Level.INFO, "Trying to load new wordle from: {0}", path);
+        final String answerPath = config.getAnswerListPath();
+        final String guessPath = config.getGuessListPath();
 
         try {
-            words = Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8)
+            LOGGER.log(System.Logger.Level.INFO, "Trying to load wordle answer list from: {0}", answerPath);
+            answers = Files.readAllLines(Paths.get(answerPath), StandardCharsets.UTF_8)
                     .stream()
                     .map(String::strip)
                     .map(String::toUpperCase)
                     .toList();
-            wordsSet.addAll(words);
+            answersSet.addAll(answers);
+            LOGGER.log(System.Logger.Level.INFO, "Successfully loaded {0} answers", answers.size());
+
+            LOGGER.log(System.Logger.Level.INFO, "Trying to load wordle guess list from: {0}", guessPath);
+            guesses = Files.readAllLines(Paths.get(guessPath), StandardCharsets.UTF_8)
+                    .stream()
+                    .map(String::strip)
+                    .map(String::toUpperCase)
+                    .toList();
+            guessesSet.addAll(guesses);
+            LOGGER.log(System.Logger.Level.INFO, "Successfully loaded {0} guesses", guesses.size());
         } catch (IOException e) {
             throw new RuntimeException("Failed to load wordlist", e);
         }
 
-        LOGGER.log(System.Logger.Level.INFO, "Successfully loaded {0} words", words.size());
+        words.addAll(answers);
+        words.addAll(guesses);
+        wordsSet.addAll(words);
+
+        LOGGER.log(System.Logger.Level.INFO, "Successfully loaded {0}/{1} words", wordsSet.size(), words.size());
     }
 }

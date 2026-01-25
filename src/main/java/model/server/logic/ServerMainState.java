@@ -1,10 +1,14 @@
 package model.server.logic;
 
+import model.client.message.GuessMessage;
 import model.client.message.LoginMessage;
 import model.client.message.StartGameMessage;
 import model.server.Player;
+import model.server.message.GuessResponse;
 import model.server.message.LoginResponse;
 import model.server.message.StartGameResponse;
+
+import java.util.ArrayList;
 
 public class ServerMainState extends ServerState {
     /**
@@ -71,11 +75,30 @@ public class ServerMainState extends ServerState {
         if (!(sender.getLastPlayDate() == logic.getWordleEngine().getCurrentPlayDay())) {
             LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started first game of the day", id, sender.getName());
             sender.setLastPlayDate(logic.getWordleEngine().getCurrentPlayDay());
-            sender.startGame(logic.getWordleEngine().getCurrentWord());
+            sender.startGame(logic.getWordleEngine().getCurrentWord(), 6);
         } else {
             LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started game with random word", id, sender.getName());
-            sender.startGame(logic.getWordleEngine().getRandomWord());
+            sender.startGame(logic.getWordleEngine().getRandomWord(), 6);
         }
         send(sender, new StartGameResponse(sender.getCurrentAnswer().length()));
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void received(GuessMessage msg, int id) {
+        final Player sender = logic.getPlayerById(id);
+        if (!sender.isGameActive()) {
+            LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} has not started a game yet", id, sender.getName());
+            return;
+        }
+        if (sender.canSubmitGuess() && logic.getWordleEngine().isValidWord(msg.getGuess())) {
+            LOGGER.log(System.Logger.Level.INFO, "Client {0} with name {1}: accepted guess {2} (answer is {3})", id, sender.getName(), msg.getGuess(), sender.getCurrentAnswer());
+            send(sender, new GuessResponse(true, logic.getWordleEngine().evaluateGuess(msg.getGuess(), sender.getCurrentAnswer())));
+        } else {
+            LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1}: rejected guess {2} (answer is {3})", id, sender.getName(), msg.getGuess(), sender.getCurrentAnswer());
+            send(sender, new GuessResponse(false, new ArrayList<>()));
+        }
     }
 }

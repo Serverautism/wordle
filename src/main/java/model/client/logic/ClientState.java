@@ -5,6 +5,7 @@ import model.client.Feature;
 import model.client.message.ServerMessageInterpreter;
 import model.client.notification.GameEventListener;
 import model.server.message.DisconnectResponse;
+import model.server.message.GuessResponse;
 import model.server.message.LoginResponse;
 import model.server.message.StartGameResponse;
 
@@ -85,5 +86,14 @@ public abstract class ClientState implements ServerMessageInterpreter, GameEvent
      */
     public void received(DisconnectResponse msg) {
         ClientGameLogic.LOGGER.log(System.Logger.Level.ERROR, "received DisconnectResponse not allowed in {0}", getName()); //NON-NLS
+    }
+
+    /**
+     * Reports the effect of a GuessResponse from the server message.
+     *
+     * @param msg the message received from server
+     */
+    public void received(GuessResponse msg) {
+        ClientGameLogic.LOGGER.log(System.Logger.Level.ERROR, "received GuessResponse not allowed in {0}", getName()); //NON-NLS
     }
 }

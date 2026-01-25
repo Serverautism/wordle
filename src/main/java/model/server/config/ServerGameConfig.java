@@ -10,10 +10,16 @@ public class ServerGameConfig extends Config {
     private int port = 1234;
 
     /**
-     * Path to the file representing the wordlist.
+     * Path to the file representing the wordlist for all allowed answers.
      */
-    @Property("words.list")
-    private String wordListPath;
+    @Property("words.answers")
+    private String answerListPath;
+
+    /**
+     * Path to the file representing the wordlist for all allowed guesses.
+     */
+    @Property("words.guesses")
+    private String guessListPath;
 
     /**
      * Path to the folder containing the user files.
@@ -21,8 +27,12 @@ public class ServerGameConfig extends Config {
     @Property("user.folder")
     private String userFolder;
 
-    public String getWordListPath() {
-        return wordListPath;
+    public String getAnswerListPath() {
+        return answerListPath;
+    }
+
+    public String getGuessListPath() {
+        return guessListPath;
     }
 
     public String getUserFolder() {

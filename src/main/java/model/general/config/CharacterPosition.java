@@ -1,9 +1,7 @@
 package model.general.config;
 
-import java.io.Serializable;
-
-public enum CharacterPosition implements Serializable {
+public enum CharacterPosition {
     FUCKINGWRONG,
     WRONG,
-    RIGHT
+    RIGHT;
 }

@@ -5,6 +5,7 @@ import model.client.message.GuessMessage;
 import model.client.notification.BackspacePressedEvent;
 import model.client.notification.EnterPressedEvent;
 import model.client.notification.LetterPressedEvent;
+import model.server.message.GuessResponse;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +28,15 @@ public class GuessState extends ClientState {
     @Override
     public void entry() {
         logic.getEventBroker().addListener(this);
+    }
+
+    @Override
+    public void received(GuessResponse msg) {
+        if (msg.isAccepted()) {
+            ClientGameLogic.LOGGER.log(System.Logger.Level.INFO, "guess {0} was accepted with result: {1}", logic.getCurrentSession().getUnsubmittedGuess(), msg.getPositions());
+        } else {
+            ClientGameLogic.LOGGER.log(System.Logger.Level.INFO, "guess {0} was rejected", logic.getCurrentSession().getUnsubmittedGuess());
+        }
     }
 
     @Override
