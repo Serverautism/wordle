@@ -4,7 +4,9 @@ import client.InputState;
 import model.general.config.CharacterPosition;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CurrentSession {
     /**
@@ -19,6 +21,8 @@ public class CurrentSession {
 
     private List<String> submittedGuesses = new ArrayList<>();
     private List<List<CharacterPosition>> positions = new ArrayList<>();
+
+    private Map<Character, CharacterPosition> letterState = new HashMap<>();
 
     /**
      * Creates a new CurrentSession, containing information about the wordle
@@ -70,9 +74,29 @@ public class CurrentSession {
      */
     public void submitGuess(List<CharacterPosition> positions) {
         if (canSubmitGuess()) {
+            safeLetterState(unsubmittedGuess, positions);
             submittedGuesses.add(unsubmittedGuess);
             unsubmittedGuess = "";
             this.positions.add(positions);
+        }
+    }
+
+    /**
+     * Updates the letter states based on the guess and its evaluation
+     *
+     * @param guess the guess
+     * @param states the guesses rating
+     */
+    private void safeLetterState(String guess, List<CharacterPosition> states) {
+        for (int i = 0; i < guess.length(); i++) {
+            Character c = guess.charAt(i);
+            if (letterState.containsKey(c)) {
+                if (letterState.get(c).ordinal() < states.get(i).ordinal()) {
+                    letterState.put(c, states.get(i));
+                }
+            } else {
+                letterState.put(c, states.get(i));
+            }
         }
     }
 
@@ -129,5 +153,9 @@ public class CurrentSession {
 
     public int getMaxGuessAmount() {
         return maxGuessAmount;
+    }
+
+    public Map<Character, CharacterPosition> getLetterState() {
+        return letterState;
     }
 }

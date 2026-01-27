@@ -1,7 +1,5 @@
 package client.view;
 
-import com.jme3.bounding.BoundingBox;
-import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
@@ -77,5 +75,9 @@ public class ColoredTextTile {
         final float textX = x + size / 2f - text.getLineWidth() / 2f;
         final float textY = y + size / 2f + text.getLineHeight() / 2f;
         text.setLocalTranslation(textX, textY, 1);
+    }
+
+    public char getChar() {
+        return text.getText().charAt(0);
     }
 }

@@ -87,23 +87,11 @@ public class WordleAppState extends GameAppState implements GameEventListener {
     @Override
     public void update(float tpf) {}
 
-    @Override
-    public void receivedEvent(StartGameEvent event) {
-        LOGGER.log(System.Logger.Level.INFO, "StartGameEvent received by view");
-        gameSession = event.session();
-        guessNode.detachAllChildren();
-        letterNode.detachAllChildren();
-        initializeGuessGrid(gameSession.getMaxGuessAmount(), gameSession.getAnswerLength());
-        initializeLetterGrid();
-    }
-
-    @Override
-    public void receivedEvent(GuessSubmittedEvent event) {
-        LOGGER.log(System.Logger.Level.INFO, "GuessSubmittedEvent received by view");
-        List<List<CharacterPosition>> positions = event.session().getPositions();
-        List<String> guesses = event.session().getSubmittedGuesses();
+    private void updateGuesses(CurrentSession session) {
+        List<List<CharacterPosition>> positions = session.getPositions();
+        List<String> guesses = session.getSubmittedGuesses();
         for (int row = 0; row < guesses.size(); row++) {
-            for (int col = 0; col < event.session().getAnswerLength(); col++) {
+            for (int col = 0; col < session.getAnswerLength(); col++) {
                 ColoredTextTile tile = guessGrid[row][col];
                 CharacterPosition positionRating = positions.get(row).get(col);
                 String text = "" + guesses.get(row).charAt(col);
@@ -117,6 +105,40 @@ public class WordleAppState extends GameAppState implements GameEventListener {
                 tile.setTextColor(ColorRGBA.White);
             }
         }
+    }
+
+    private void updateLetters(CurrentSession session) {
+        for (ColoredTextTile[] row : letterGrid) {
+            for (ColoredTextTile tile : row) {
+                char c = tile.getChar();
+                if (session.getLetterState().containsKey(c)) {
+                    ColorRGBA color = switch (session.getLetterState().get(c)) {
+                        case FUCKINGWRONG -> GREY;
+                        case WRONG -> YELLOW;
+                        case RIGHT -> GREEN;
+                    };
+                    tile.setColor(color);
+                    tile.setTextColor(ColorRGBA.White);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void receivedEvent(StartGameEvent event) {
+        LOGGER.log(System.Logger.Level.INFO, "StartGameEvent received by view");
+        gameSession = event.session();
+        guessNode.detachAllChildren();
+        letterNode.detachAllChildren();
+        initializeGuessGrid(gameSession.getMaxGuessAmount(), gameSession.getAnswerLength());
+        initializeLetterGrid();
+    }
+
+    @Override
+    public void receivedEvent(GuessSubmittedEvent event) {
+        LOGGER.log(System.Logger.Level.INFO, "GuessSubmittedEvent received by view");
+        updateGuesses(event.session());
+        updateLetters(event.session());
     }
 
     @Override
