@@ -13,15 +13,26 @@ public class PlayerAuthDTO {
     static final System.Logger LOGGER = System.getLogger(PlayerAuthDTO.class.getName());
 
     private String name;
+    private String alias;
     private String password;
-    private int score;
     private long lastPlayDate;
+    private int score;
+    private int streak;
+    private int maxStreak;
+    private int wordlesSolved;
+    private int wordlesLost;
+    private int[] guessDistribution;
 
-    /**
-     * Creates a PlayerAuthDTO from a Player instance
-     */
-    public PlayerAuthDTO(Player player) {
-
+    public void setStatsTo(Player player) {
+        name = player.getName();
+        alias = player.getAlias();
+        lastPlayDate = player.getLastPlayDate();
+        score = player.getScore();
+        streak = player.getStreak();
+        maxStreak = player.getMaxStreak();
+        wordlesSolved = player.getWordlesSolved();
+        wordlesLost = player.getWordlesLost();
+        guessDistribution = player.getGuessDistribution();
     }
 
     /**
@@ -34,7 +45,7 @@ public class PlayerAuthDTO {
         try (FileWriter writer = new FileWriter(file)) {
             final Gson gson = new GsonBuilder().setPrettyPrinting().create();
             final String json = gson.toJson(this);
-            LOGGER.log(System.Logger.Level.DEBUG, "JSON of map: {0}", json);
+            LOGGER.log(System.Logger.Level.DEBUG, "JSON of player: {0}", json);
             writer.write(json);
             LOGGER.log(System.Logger.Level.INFO, "JSON written to {0}", file.getAbsolutePath());
         }
@@ -56,19 +67,44 @@ public class PlayerAuthDTO {
         }
     }
 
-    public String getPassword() {
-        return password;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public boolean checkPassword(String pwd) {
+        return password.equals(pwd);
+    }
+
+    public long getLastPlayDate() {
+        return lastPlayDate;
     }
 
     public int getScore() {
         return score;
     }
 
-    public String getName() {
-        return name;
+    public int getStreak() {
+        return streak;
     }
 
-    public long getLastPlayDate() {
-        return lastPlayDate;
+    public int getMaxStreak() {
+        return maxStreak;
+    }
+
+    public int getWordlesSolved() {
+        return wordlesSolved;
+    }
+
+    public int getWordlesLost() {
+        return wordlesLost;
+    }
+
+    public int[] getGuessDistribution() {
+        return guessDistribution;
     }
 }

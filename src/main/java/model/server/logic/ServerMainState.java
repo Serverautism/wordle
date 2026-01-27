@@ -78,11 +78,11 @@ public class ServerMainState extends ServerState {
             LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started first game of the day", id, sender.getName());
             sender.setLastPlayDate(logic.getWordleEngine().getCurrentPlayDay());
             sender.startGame(logic.getWordleEngine().getCurrentWord(), 6);
-            sender.setPointsToGain(logic.getConfig().getPointsDaily());
+            sender.setDailyOrRandom(true, logic.getConfig().getPointsDaily());
         } else {
             LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started game with random word", id, sender.getName());
             sender.startGame(logic.getWordleEngine().getRandomWord(), 6);
-            sender.setPointsToGain(logic.getConfig().getPointsRandom());
+            sender.setDailyOrRandom(false, logic.getConfig().getPointsRandom());
         }
         send(sender, new StartGameResponse(sender.getCurrentAnswer().length()));
     }
@@ -107,8 +107,10 @@ public class ServerMainState extends ServerState {
             if (msg.getGuess().equals(sender.getCurrentAnswer())) {
                 LOGGER.log(System.Logger.Level.INFO, "Client {0} with name {1}: guessed the correct answer", id, sender.getName());
                 sender.endGame(true);
+                sender.saveStats(logic.getConfig().getUserFolder());
             } else if (!sender.canSubmitGuess()) {
                 sender.endGame(false);
+                sender.saveStats(logic.getConfig().getUserFolder());
             }
         } else {
             LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1}: rejected guess {2} (answer is {3})", id, sender.getName(), msg.getGuess(), sender.getCurrentAnswer());

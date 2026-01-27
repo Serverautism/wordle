@@ -4,6 +4,18 @@ import model.general.config.Config;
 
 public class ClientGameConfig extends Config {
     /**
+     * The username to be used.
+     */
+    @Property("name")
+    private String name = "";
+
+    /**
+     * The password to be used.
+     */
+    @Property("password")
+    private String password = "";
+
+    /**
      * The default port number for the game server.
      */
     @Property("hostname")
@@ -95,5 +107,13 @@ public class ClientGameConfig extends Config {
 
     public int getPort() {
         return port;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

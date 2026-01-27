@@ -7,13 +7,20 @@ import java.io.IOException;
  * Represents a game participant on the server side, holding a unique connection ID and a display name.
  */
 public class Player {
+    static final System.Logger LOGGER = System.getLogger(Player.class.getName());
+
     /**
-     * The display name of the player.
+     * The players username
      */
     private String name;
 
     /**
-     * The day the player last played the game
+     * The players public alias
+     */
+    private String alias;
+
+    /**
+     * The players last login day
      */
     private long lastPlayDate;
 
@@ -21,6 +28,31 @@ public class Player {
      * The players overall score
      */
     private int score;
+
+    /**
+     * The players current daily wordle streak
+     */
+    private int streak;
+
+    /**
+     * The players longest ever wordle streak
+     */
+    private int maxStreak;
+
+    /**
+     * The total amount of wordles solved
+     */
+    private int wordlesSolved;
+
+    /**
+     * The total amount of wordles lost
+     */
+    private int wordlesLost;
+
+    /**
+     * The distribution of guesses needed to solve wordles
+     */
+    private int[] guessDistribution;
 
     /**
      * Points the player could win when solving this wordle
@@ -33,7 +65,7 @@ public class Player {
     private final int id;
 
     /**
-     * Indicates if the player hab a valid login
+     * Indicates if the player has a valid login
      */
     private boolean authenticated = false;
 
@@ -41,6 +73,11 @@ public class Player {
      * Indicates if the player is currently playing a game
      */
     private boolean gameActive = false;
+
+    /**
+     * Indicates if the currently played wordle is the daily wordle
+     */
+    private boolean dailyWordle = false;
 
     /**
      * The amount of guesses made in the current game
@@ -71,19 +108,36 @@ public class Player {
         final String path = location + name + ".json";
         try {
             final PlayerAuthDTO dto = PlayerAuthDTO.loadFrom(new File(path));
-            if (password.equals(dto.getPassword())) {
+            if (dto.checkPassword(password)) {
                 setAuthenticated(true);
                 loadStats(dto);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LOGGER.log(System.Logger.Level.ERROR, "Could not load player data for player name: {0}", name);
         }
     }
 
     private void loadStats(PlayerAuthDTO dto) {
         name = dto.getName();
-        score = dto.getScore();
+        alias = dto.getAlias();
         lastPlayDate = dto.getLastPlayDate();
+        score = dto.getScore();
+        streak = dto.getStreak();
+        maxStreak = dto.getMaxStreak();
+        wordlesSolved = dto.getWordlesSolved();
+        wordlesLost = dto.getWordlesLost();
+        guessDistribution = dto.getGuessDistribution();
+    }
+
+    public void saveStats(String location) {
+        final String path = location + name + ".json";
+        try {
+            PlayerAuthDTO dto = PlayerAuthDTO.loadFrom(new File(path));
+            dto.setStatsTo(this);
+            dto.saveTo(new File(path));
+        } catch (IOException e) {
+            LOGGER.log(System.Logger.Level.ERROR, "Could not save player data for player name: {0}", name);
+        }
     }
 
     public void startGame(String answer, int maxGuesses) {
@@ -94,7 +148,28 @@ public class Player {
     }
 
     public void endGame(boolean won) {
-        //TODO: score hinzufügen
+        if (won) {
+            score += pointsToGain;
+            wordlesSolved += 1;
+            guessDistribution[guessesMade - 1] += 1;
+        } else {
+            if (!dailyWordle && score > 0) {
+                score -= 1;
+                wordlesLost += 1;
+            }
+        }
+
+        if (dailyWordle) {
+            if (won) {
+                streak += 1;
+                if (maxStreak < streak) {
+                    maxStreak = streak;
+                }
+            } else {
+                streak = 0;
+            }
+        }
+
         gameActive = false;
     }
 
@@ -104,6 +179,38 @@ public class Player {
      */
     public String getName() {
         return name;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public long getLastPlayDate() {
+        return lastPlayDate;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getStreak() {
+        return streak;
+    }
+
+    public int getMaxStreak() {
+        return maxStreak;
+    }
+
+    public int getWordlesSolved() {
+        return wordlesSolved;
+    }
+
+    public int getWordlesLost() {
+        return wordlesLost;
+    }
+
+    public int[] getGuessDistribution() {
+        return guessDistribution;
     }
 
     /**
@@ -122,12 +229,7 @@ public class Player {
         this.authenticated = authenticated;
     }
 
-    public long getLastPlayDate() {
-        return lastPlayDate;
-    }
-
     public void setLastPlayDate(long day) {
-        //TODO: streak berechnen
         lastPlayDate = day;
     }
 
@@ -148,7 +250,6 @@ public class Player {
     }
 
     public void submitGuess(String guess) {
-        //TODO: speichern
         guessesMade += 1;
     }
 
@@ -156,7 +257,8 @@ public class Player {
         return currentAnswer;
     }
 
-    public void setPointsToGain(int pointsToGain) {
+    public void setDailyOrRandom(boolean daily, int pointsToGain) {
+        dailyWordle = daily;
         this.pointsToGain = pointsToGain;
     }
 

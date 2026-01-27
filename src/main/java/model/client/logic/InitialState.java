@@ -38,7 +38,7 @@ public class InitialState extends ClientState{
      */
     @Override
     public void received(ConnectionResponse msg) {
-        logic.send(new LoginMessage("josi", "1201"));
+        logic.send(new LoginMessage(logic.getGameConfig().getName(), logic.getGameConfig().getPassword()));
     }
 
     /**

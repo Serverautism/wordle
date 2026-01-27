@@ -1,6 +1,12 @@
 {
   "name": "josi",
+  "alias": "josilein",
   "password": "1201",
-  "score": 1000,
-  "lastPlayDate": 0
+  "lastPlayDate": 0,
+  "score": 0,
+  "streak": 0,
+  "maxStreak": 0,
+  "wordlesSolved": 0,
+  "wordlesLost": 0,
+  "guessDistribution": [0, 0, 0, 0, 0, 0]
 }
