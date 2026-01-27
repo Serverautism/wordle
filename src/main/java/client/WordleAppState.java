@@ -26,6 +26,7 @@ public class WordleAppState extends GameAppState implements GameEventListener {
     private static final int GUESS_TILE_SIZE = 50;
     private static final int GUESS_TILE_GAP = 10;
     private static final int KEY_TILE_SIZE = 25;
+    private static final int KEY_TILE_GAP = 5;
 
     private static final ColorRGBA GREEN = new ColorRGBA(108 / 255f, 169 / 255f, 101 / 255f, 1f);
     private static final ColorRGBA YELLOW = new ColorRGBA(200 / 255f, 182 / 255f, 83 / 255f, 1f);
@@ -33,6 +34,7 @@ public class WordleAppState extends GameAppState implements GameEventListener {
     private static final ColorRGBA BACKGROUND_COLOR = new ColorRGBA(221 / 255f, 200 / 255f, 196 / 255f, 1f);
 
     private ColoredTextTile[][] guessGrid;
+    private ColoredTextTile[][] letterGrid;
 
     /**
      * The root node for all visual elements in this state.
@@ -42,7 +44,12 @@ public class WordleAppState extends GameAppState implements GameEventListener {
     /**
      * The node for the guess grid
      */
-    private final Node guessNode = new Node("Guess");
+    private final Node guessNode = new Node("Guesses");
+
+    /**
+     * The node for the guess grid
+     */
+    private final Node letterNode = new Node("Letters");
 
     private CurrentSession gameSession;
 
@@ -56,6 +63,7 @@ public class WordleAppState extends GameAppState implements GameEventListener {
         viewNode.detachAllChildren();
         getGameLogic().getEventBroker().addListener(this);
         viewNode.attachChild(guessNode);
+        viewNode.attachChild(letterNode);
         getApp().getGuiNode().attachChild(viewNode);
         addBackground();
     }
@@ -84,7 +92,9 @@ public class WordleAppState extends GameAppState implements GameEventListener {
         LOGGER.log(System.Logger.Level.INFO, "StartGameEvent received by view");
         gameSession = event.session();
         guessNode.detachAllChildren();
+        letterNode.detachAllChildren();
         initializeGuessGrid(gameSession.getMaxGuessAmount(), gameSession.getAnswerLength());
+        initializeLetterGrid();
     }
 
     @Override
@@ -104,7 +114,7 @@ public class WordleAppState extends GameAppState implements GameEventListener {
                 };
                 tile.setColor(color);
                 tile.setText(text);
-                tile.sedTextColor(ColorRGBA.White);
+                tile.setTextColor(ColorRGBA.White);
             }
         }
     }
@@ -137,6 +147,27 @@ public class WordleAppState extends GameAppState implements GameEventListener {
                 Geometry g = createQuad(GUESS_TILE_SIZE, ColorRGBA.White);
                 BitmapText t = createText(32, "", ColorRGBA.Black);
                 guessGrid[row][col] = new ColoredTextTile(GUESS_TILE_SIZE, g, t, guessNode, x, y);
+            }
+        }
+    }
+
+    private void initializeLetterGrid() {
+        int rows = 2;
+        int cols = 13;
+        int letter = 'A';
+        letterGrid = new ColoredTextTile[rows][cols];
+        int startX = getApp().getConfig().getResolutionWidth() / 2 - (cols * (KEY_TILE_SIZE + KEY_TILE_GAP) / 2);
+        int startY = 2 * (GUESS_TILE_GAP + KEY_TILE_SIZE);
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                int x = startX + col * (KEY_TILE_SIZE + KEY_TILE_GAP);
+                int y = startY - row * (KEY_TILE_SIZE + KEY_TILE_GAP);
+                String text = "" + (char) letter;
+                letter += 1;
+                Geometry g = createQuad(KEY_TILE_SIZE, ColorRGBA.White);
+                BitmapText t = createText(16, text, ColorRGBA.Black);
+                letterGrid[row][col] = new ColoredTextTile(KEY_TILE_SIZE, g, t, letterNode, x, y);
             }
         }
     }
