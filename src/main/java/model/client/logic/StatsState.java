@@ -3,6 +3,7 @@ package model.client.logic;
 import model.client.Feature;
 import model.client.message.StatsRequestMessage;
 import model.client.notification.GameEventListener;
+import model.client.notification.StatsReceivedEvent;
 import model.client.notification.TabPressedEvent;
 import model.server.message.StatsRequestResponse;
 
@@ -33,7 +34,7 @@ public class StatsState extends ClientState {
 
     @Override
     public void received(StatsRequestResponse msg) {
-
+        logic.getEventBroker().notifyListeners(new StatsReceivedEvent(msg));
     }
 
     @Override

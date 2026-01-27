@@ -3,11 +3,9 @@ package model.server.logic;
 import model.client.message.GuessMessage;
 import model.client.message.LoginMessage;
 import model.client.message.StartGameMessage;
+import model.client.message.StatsRequestMessage;
 import model.server.Player;
-import model.server.message.ConnectionResponse;
-import model.server.message.GuessResponse;
-import model.server.message.LoginResponse;
-import model.server.message.StartGameResponse;
+import model.server.message.*;
 
 import java.util.ArrayList;
 
@@ -75,14 +73,14 @@ public class ServerMainState extends ServerState {
             return;
         }
         if (!(sender.getLastPlayDate() == logic.getWordleEngine().getCurrentPlayDay())) {
-            LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started first game of the day", id, sender.getName());
+            LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started first game of the day: {2}", id, sender.getName(), sender.getCurrentAnswer());
             sender.setLastPlayDate(logic.getWordleEngine().getCurrentPlayDay());
             sender.startGame(logic.getWordleEngine().getCurrentWord(), 6);
             sender.setDailyOrRandom(true, logic.getConfig().getPointsDaily());
         } else {
-            LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started game with random word", id, sender.getName());
             sender.startGame(logic.getWordleEngine().getRandomWord(), 6);
             sender.setDailyOrRandom(false, logic.getConfig().getPointsRandom());
+            LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started game with random word: {2}", id, sender.getName(), sender.getCurrentAnswer());
         }
         send(sender, new StartGameResponse(sender.getCurrentAnswer().length()));
     }
@@ -117,5 +115,16 @@ public class ServerMainState extends ServerState {
             send(sender, new GuessResponse(false, new ArrayList<>()));
         }
         LOGGER.log(System.Logger.Level.INFO, "Client {0} with name {1} has {2} guesses remaining", id, sender.getName(), sender.getRemainingGuesses());
+    }
+
+    /**
+     *
+     * @param mag  the StatsRequestMessage to be processed
+     * @param id the connection ID from which the message was sent
+     */
+    @Override
+    public void received(StatsRequestMessage mag, int id) {
+        final Player sender = logic.getPlayerById(id);
+        send(sender, new StatsRequestResponse(sender));
     }
 }
