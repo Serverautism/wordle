@@ -8,5 +8,10 @@ public enum Feature {
     /**
      * Indicates that the wordle game view shall be selected.
      */
-    WORDLE;
+    WORDLE,
+
+    /**
+     * Indicates that the stats view shall be selected.
+     */
+    STATS;
 }

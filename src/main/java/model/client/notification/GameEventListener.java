@@ -52,4 +52,11 @@ public interface GameEventListener {
      * @param event the received InputUpdateEvent
      */
     default void receivedEvent(InputUpdateEvent event) {}
+
+    /**
+     * Called when a {@link TabPressedEvent} has been received.
+     *
+     * @param event the received TabPressedEvent
+     */
+    default void receivedEvent(TabPressedEvent event) {}
 }

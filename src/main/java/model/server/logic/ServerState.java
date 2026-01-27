@@ -121,6 +121,15 @@ abstract class ServerState implements ClientMessageInterpreter {
     }
 
     /**
+     * Called when a StatsRequestMessage is received in this state.
+     * @param msg  the StatsRequestMessage to be processed
+     * @param id the connection ID from which the message was sent
+     */
+    public void received(StatsRequestMessage msg, int id) {
+        LOGGER.log(System.Logger.Level.ERROR, "receiving a StatsRequestMessage not allowed in {0}", getName());
+    }
+
+    /**
      * Attempts to add a new player to the current game state.
      *
      * @param id the connection ID of the player attempting to join

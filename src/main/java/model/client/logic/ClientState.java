@@ -110,4 +110,13 @@ public abstract class ClientState implements ServerMessageInterpreter, GameEvent
     public void received(ConnectionResponse msg) {
         ClientGameLogic.LOGGER.log(System.Logger.Level.ERROR, "received ConnectionResponse not allowed in {0}", getName()); //NON-NLS
     }
+
+    /**
+     * Reports the effect of a StatsRequestResponse from the server message.
+     *
+     * @param msg the message received from server
+     */
+    public void received(StatsRequestResponse msg) {
+        ClientGameLogic.LOGGER.log(System.Logger.Level.ERROR, "received StatsRequestResponse not allowed in {0}", getName()); //NON-NLS
+    }
 }

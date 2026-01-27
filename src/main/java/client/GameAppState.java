@@ -3,6 +3,13 @@ package client;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
+import com.jme3.material.Material;
+import com.jme3.material.RenderState;
+import com.jme3.math.ColorRGBA;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Quad;
 import model.client.logic.ClientGameLogic;
 
 /**
@@ -86,4 +93,62 @@ public abstract class GameAppState extends AbstractAppState {
      * specific actions when the state is disabled.
      */
     protected abstract void disableState();
+
+    /**
+     * Creates a quad with specified size and color
+     *
+     * @param size in pixel
+     * @param color as rgba
+     * @return the quad geometry
+     */
+    public Geometry createQuad(int size, ColorRGBA color) {
+        return createQuad(size, size, color);
+    }
+
+    /**
+     * Creates a quad with specified size and color
+     *
+     * @param width the width as int
+     * @param height the height as int
+     * @param color the color as colorRGBA
+     * @return the quad as geometry
+     */
+    public Geometry createQuad(int width, int height, ColorRGBA color) {
+        Quad shape = new Quad(width, height);
+        Geometry geom = new Geometry("Tile", shape);
+        geom.setMaterial(createColoredMaterial(color));
+        return geom;
+    }
+
+    /**
+     *  Creates a BitmapText object with:
+     *
+     * @param fontSize fontsize as int
+     * @param text as String
+     * @param color as rgba
+     * @return the BitmapText object
+     */
+    public BitmapText createText(int fontSize, String text, ColorRGBA color) {
+        BitmapFont font = app.getAssetManager().loadFont("Metropolis-Bold-32.fnt");
+        BitmapText t = new BitmapText(font);
+        t.setText(text);
+        t.setColor(color);
+        t.setSize(fontSize);
+        return t;
+    }
+
+    /**
+     * Creates colored material
+     *
+     * @param color materials color as rgba
+     * @return the material
+     */
+    public Material createColoredMaterial(ColorRGBA color) {
+        final Material material = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+        if (color.getAlpha() < 1f) {
+            material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        }
+        material.setColor("Color", color);
+        return material;
+    }
 }

@@ -3,17 +3,17 @@
   "alias": "serverautism",
   "password": "12345678",
   "lastPlayDate": 20480,
-  "score": 12,
+  "score": 16,
   "streak": 1,
   "maxStreak": 1,
-  "wordlesSolved": 3,
+  "wordlesSolved": 7,
   "wordlesLost": 0,
   "guessDistribution": [
     0,
-    0,
+    1,
     2,
     1,
-    0,
-    0
+    2,
+    1
   ]
 }

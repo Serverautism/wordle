@@ -9,12 +9,9 @@ import com.jme3.system.AppSettings;
 import model.client.Feature;
 import model.client.config.ClientGameConfig;
 import model.client.logic.ClientGameLogic;
-import model.client.message.ClientMessage;
-import model.client.message.LoginMessage;
 import model.client.message.ServerMessageReceiver;
 import model.client.notification.GameEventBroker;
 import model.server.message.ServerMessage;
-import org.lwjgl.system.CallbackI;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,6 +46,11 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
      * AppState that renders the graphics when playing a wordle game
      */
     private WordleAppState wordleAppState = new WordleAppState();
+
+    /**
+     * AppState that renders the graphics when showing the players stats
+     */
+    private client.StatsAppState statsAppState = new client.StatsAppState();
 
     /**
      * Executor service for handling asynchronous tasks.
@@ -135,7 +137,7 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
         flyCam.setEnabled(false);
         stateManager.detach(stateManager.getState(StatsAppState.class));
         stateManager.detach(stateManager.getState(DebugKeysAppState.class));
-        stateManager.attachAll(new InputState(), wordleAppState);
+        stateManager.attachAll(new InputState(), wordleAppState, statsAppState);
     }
 
     /**
@@ -158,6 +160,7 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
     private void checkStates() {
         final Set<Feature> features = logic.getFeatures();
         wordleAppState.setEnabled(features.contains(Feature.WORDLE));
+        statsAppState.setEnabled(features.contains(Feature.STATS));
     }
 
     /**

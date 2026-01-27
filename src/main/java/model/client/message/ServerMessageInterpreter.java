@@ -51,4 +51,11 @@ public interface ServerMessageInterpreter extends ServerMessageReceiver {
      * @param msg the ConnectionResponse message received
      */
     void received(ConnectionResponse msg);
+
+    /**
+     * Handles a ConnectionResponse message received from the server.
+     *
+     * @param msg the ConnectionResponse message received
+     */
+    void received(StatsRequestResponse msg);
 }

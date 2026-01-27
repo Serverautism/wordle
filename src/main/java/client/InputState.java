@@ -7,10 +7,7 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import model.client.notification.BackspacePressedEvent;
-import model.client.notification.EnterPressedEvent;
-import model.client.notification.GameEventBroker;
-import model.client.notification.LetterPressedEvent;
+import model.client.notification.*;
 
 public class InputState extends AbstractAppState {
     /**
@@ -37,6 +34,7 @@ public class InputState extends AbstractAppState {
         app.getInputManager().addListener((ActionListener) this::letterPressed, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
         app.getInputManager().addListener((ActionListener) this::backspacePressed, "BACKSPACE");
         app.getInputManager().addListener((ActionListener) this::enterPressed, "ENTER");
+        app.getInputManager().addListener((ActionListener) this::tabPressed, "TAB");
     }
 
     private void createMappings() {
@@ -69,6 +67,7 @@ public class InputState extends AbstractAppState {
         im.addMapping("Z", new KeyTrigger(KeyInput.KEY_Z));
         im.addMapping("ENTER", new KeyTrigger(KeyInput.KEY_RETURN));
         im.addMapping("BACKSPACE", new KeyTrigger(KeyInput.KEY_BACK));
+        im.addMapping("TAB", new KeyTrigger(KeyInput.KEY_TAB));
     }
 
     private void letterPressed(String name, boolean isPressed, float tpf) {
@@ -82,6 +81,13 @@ public class InputState extends AbstractAppState {
         GameEventBroker eb = app.getGameLogic().getEventBroker();
         if (isPressed) {
             eb.notifyListeners(new EnterPressedEvent());
+        }
+    }
+
+    private void tabPressed(String name, boolean isPressed, float tpf) {
+        GameEventBroker eb = app.getGameLogic().getEventBroker();
+        if (isPressed) {
+            eb.notifyListeners(new TabPressedEvent());
         }
     }
 
