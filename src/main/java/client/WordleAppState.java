@@ -12,10 +12,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 import model.client.CurrentSession;
-import model.client.notification.GameEventListener;
-import model.client.notification.GuessSubmittedEvent;
-import model.client.notification.InputUpdateEvent;
-import model.client.notification.StartGameEvent;
+import model.client.notification.*;
 import model.general.config.CharacterPosition;
 
 import java.util.List;
@@ -30,9 +27,9 @@ public class WordleAppState extends GameAppState implements GameEventListener {
     private static final int GUESS_TILE_GAP = 10;
     private static final int KEY_TILE_SIZE = 25;
 
-    private static final ColorRGBA GREEN = new ColorRGBA(132 / 255f, 176 / 255f, 130 / 255f, 1f);
-    private static final ColorRGBA YELLOW = new ColorRGBA(255 / 255f, 182 / 255f, 92 / 255f, 1f);
-    private static final ColorRGBA GREY = new ColorRGBA(76 / 255f, 87 / 255f, 82 / 255f, 1f);
+    private static final ColorRGBA GREEN = new ColorRGBA(108 / 255f, 169 / 255f, 101 / 255f, 1f);
+    private static final ColorRGBA YELLOW = new ColorRGBA(200 / 255f, 182 / 255f, 83 / 255f, 1f);
+    private static final ColorRGBA GREY = new ColorRGBA(120 / 255f, 124 / 255f, 127 / 255f, 1f);
     private static final ColorRGBA BACKGROUND_COLOR = new ColorRGBA(221 / 255f, 200 / 255f, 196 / 255f, 1f);
 
     private ColoredTextTile[][] guessGrid;
@@ -41,6 +38,11 @@ public class WordleAppState extends GameAppState implements GameEventListener {
      * The root node for all visual elements in this state.
      */
     private final Node viewNode = new Node("view");
+
+    /**
+     * The node for the guess grid
+     */
+    private final Node guessNode = new Node("Guess");
 
     private CurrentSession gameSession;
 
@@ -53,7 +55,9 @@ public class WordleAppState extends GameAppState implements GameEventListener {
     protected void enableState() {
         viewNode.detachAllChildren();
         getGameLogic().getEventBroker().addListener(this);
+        viewNode.attachChild(guessNode);
         getApp().getGuiNode().attachChild(viewNode);
+        addBackground();
     }
 
     /**
@@ -79,7 +83,7 @@ public class WordleAppState extends GameAppState implements GameEventListener {
     public void receivedEvent(StartGameEvent event) {
         LOGGER.log(System.Logger.Level.INFO, "StartGameEvent received by view");
         gameSession = event.session();
-        viewNode.detachAllChildren();
+        guessNode.detachAllChildren();
         initializeGuessGrid(gameSession.getMaxGuessAmount(), gameSession.getAnswerLength());
     }
 
@@ -100,6 +104,7 @@ public class WordleAppState extends GameAppState implements GameEventListener {
                 };
                 tile.setColor(color);
                 tile.setText(text);
+                tile.sedTextColor(ColorRGBA.White);
             }
         }
     }
@@ -129,11 +134,19 @@ public class WordleAppState extends GameAppState implements GameEventListener {
             for (int col = 0; col < cols; col++) {
                 int x = startX + col * (GUESS_TILE_SIZE + GUESS_TILE_GAP);
                 int y = startY - row * (GUESS_TILE_SIZE + GUESS_TILE_GAP);
-                Geometry g = createQuad(GUESS_TILE_SIZE, GREY);
+                Geometry g = createQuad(GUESS_TILE_SIZE, ColorRGBA.White);
                 BitmapText t = createText(32, "", ColorRGBA.Black);
-                guessGrid[row][col] = new ColoredTextTile(GUESS_TILE_SIZE, g, t, viewNode, x, y);
+                guessGrid[row][col] = new ColoredTextTile(GUESS_TILE_SIZE, g, t, guessNode, x, y);
             }
         }
+    }
+
+    private void addBackground() {
+        int width = getApp().getConfig().getResolutionWidth();
+        int height = getApp().getConfig().getResolutionHeight();
+        Geometry geom = createQuad(width, height, BACKGROUND_COLOR);
+        geom.setLocalTranslation(0, 0, -1);
+        viewNode.attachChild(geom);
     }
 
     /**
@@ -144,7 +157,19 @@ public class WordleAppState extends GameAppState implements GameEventListener {
      * @return the quad geometry
      */
     private Geometry createQuad(int size, ColorRGBA color) {
-        Quad shape = new Quad(size, size);
+        return createQuad(size, size, color);
+    }
+
+    /**
+     * Creates a quad with specified size and color
+     *
+     * @param width the width as int
+     * @param height the height as int
+     * @param color the color as colorRGBA
+     * @return the quad as geometry
+     */
+    private Geometry createQuad(int width, int height, ColorRGBA color) {
+        Quad shape = new Quad(width, height);
         Geometry geom = new Geometry("Tile", shape);
         geom.setMaterial(createColoredMaterial(color));
         return geom;

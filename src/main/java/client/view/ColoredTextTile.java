@@ -36,6 +36,15 @@ public class ColoredTextTile {
     }
 
     /**
+     * Changes the texts color
+     *
+     * @param color specified color
+     */
+    public void sedTextColor(ColorRGBA color) {
+        text.setColor(color);
+    }
+
+    /**
      * Changes the tiles text
      *
      * @param text specified text
