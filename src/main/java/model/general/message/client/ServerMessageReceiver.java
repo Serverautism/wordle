@@ -1,6 +1,6 @@
-package model.client.message;
+package model.general.message.client;
 
-import model.server.message.ServerMessage;
+import model.general.message.server.ServerMessage;
 
 /**
  * An interface for sending a message from the server to a client.

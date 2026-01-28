@@ -1,7 +1,7 @@
-package model.client.message;
+package model.general.message.client;
 
 import com.jme3.network.AbstractMessage;
-import model.server.message.ClientMessageInterpreter;
+import model.general.message.server.ClientMessageInterpreter;
 
 public abstract class ClientMessage extends AbstractMessage {
     /**

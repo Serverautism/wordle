@@ -1,6 +1,6 @@
 package model.client.notification;
 
-import model.server.message.StatsRequestResponse;
+import model.general.message.server.StatsRequestResponse;
 
 public record StatsReceivedEvent(StatsRequestResponse msg) implements GameEvent {
     /**

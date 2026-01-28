@@ -28,3 +28,52 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+jar {
+    enabled = false
+}
+
+tasks.register('clientJar', Jar) {
+    group = "build"
+    description = "client build without server code"
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from(sourceSets.main.output) {
+        include 'client/**'
+        include 'model/client/**'
+        include 'model/general/**'
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    archiveBaseName = "Wordle-Client"
+    archiveVersion = "1.0"
+
+    manifest {
+        attributes(
+                'Main-Class': 'client.WordleApp'
+        )
+    }
+}
+
+tasks.register('serverJar', Jar) {
+    group = "build"
+    description = "server build without client code"
+
+    from(sourceSets.main.output) {
+        include 'server/**'
+        include 'model/server/**'
+        include 'model/general/**'
+    }
+
+    archiveBaseName = "Wordle-Server"
+
+    manifest {
+        attributes(
+                'Main-Class': 'server.WordleServer'
+        )
+    }
+}

@@ -2,9 +2,9 @@ package model.client.logic;
 
 import java.util.*;
 import model.client.Feature;
-import model.client.message.ServerMessageInterpreter;
+import model.general.message.client.ServerMessageInterpreter;
 import model.client.notification.GameEventListener;
-import model.server.message.*;
+import model.general.message.server.*;
 
 /**
  * Defines the behavior and state transitions for the client-side game logic.

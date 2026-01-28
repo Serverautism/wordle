@@ -1,6 +1,6 @@
-package model.client.message;
+package model.general.message.client;
 
-import model.server.message.*;
+import model.general.message.server.*;
 
 /**
  * An interface for processing server messages.

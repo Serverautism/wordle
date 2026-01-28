@@ -1,7 +1,7 @@
-package model.server.message;
+package model.general.message.server;
 
 import com.jme3.network.serializing.Serializable;
-import model.client.message.ServerMessageInterpreter;
+import model.general.message.client.ServerMessageInterpreter;
 import model.general.config.CharacterPosition;
 
 import java.util.Arrays;

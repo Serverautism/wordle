@@ -1,14 +1,13 @@
 package model.client.logic;
 
 import model.client.Feature;
-import model.client.message.LoginMessage;
-import model.client.message.StartGameMessage;
-import model.server.message.ConnectionResponse;
-import model.server.message.LoginResponse;
-import model.server.message.StartGameResponse;
+import model.general.message.client.LoginMessage;
+import model.general.message.client.StartGameMessage;
+import model.general.message.server.ConnectionResponse;
+import model.general.message.server.LoginResponse;
+import model.general.message.server.StartGameResponse;
 
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Set;
 
 /**

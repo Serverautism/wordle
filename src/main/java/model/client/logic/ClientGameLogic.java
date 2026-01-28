@@ -4,10 +4,10 @@ import client.network.ClientSender;
 import model.client.CurrentSession;
 import model.client.Feature;
 import model.client.config.ClientGameConfig;
-import model.client.message.ClientMessage;
-import model.client.message.ServerMessageReceiver;
+import model.general.message.client.ClientMessage;
+import model.general.message.client.ServerMessageReceiver;
 import model.client.notification.GameEventBroker;
-import model.server.message.ServerMessage;
+import model.general.message.server.ServerMessage;
 
 import java.util.Set;
 

@@ -1,7 +1,7 @@
 package server.network;
 
 
-import model.client.message.ClientMessage;
+import model.general.message.client.ClientMessage;
 import model.server.logic.ServerGameLogic;
 
 /**

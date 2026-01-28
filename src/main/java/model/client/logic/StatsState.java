@@ -1,11 +1,9 @@
 package model.client.logic;
 
 import model.client.Feature;
-import model.client.message.StatsRequestMessage;
-import model.client.notification.GameEventListener;
 import model.client.notification.StatsReceivedEvent;
 import model.client.notification.TabPressedEvent;
-import model.server.message.StatsRequestResponse;
+import model.general.message.server.StatsRequestResponse;
 
 import java.util.EnumSet;
 import java.util.Set;

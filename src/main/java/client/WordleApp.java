@@ -9,9 +9,9 @@ import com.jme3.system.AppSettings;
 import model.client.Feature;
 import model.client.config.ClientGameConfig;
 import model.client.logic.ClientGameLogic;
-import model.client.message.ServerMessageReceiver;
+import model.general.message.client.ServerMessageReceiver;
 import model.client.notification.GameEventBroker;
-import model.server.message.ServerMessage;
+import model.general.message.server.ServerMessage;
 
 import java.io.File;
 import java.io.IOException;

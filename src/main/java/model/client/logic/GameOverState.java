@@ -1,11 +1,11 @@
 package model.client.logic;
 
 import model.client.Feature;
-import model.client.message.StartGameMessage;
-import model.client.message.StatsRequestMessage;
+import model.general.message.client.StartGameMessage;
+import model.general.message.client.StatsRequestMessage;
 import model.client.notification.EnterPressedEvent;
 import model.client.notification.TabPressedEvent;
-import model.server.message.StartGameResponse;
+import model.general.message.server.StartGameResponse;
 
 import java.util.EnumSet;
 import java.util.Set;

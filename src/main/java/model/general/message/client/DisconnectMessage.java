@@ -1,10 +1,10 @@
-package model.client.message;
+package model.general.message.client;
 
 import com.jme3.network.serializing.Serializable;
-import model.server.message.ClientMessageInterpreter;
+import model.general.message.server.ClientMessageInterpreter;
 
 @Serializable
-public class StartGameMessage extends ClientMessage {
+public class DisconnectMessage extends ClientMessage {
     /**
      * Accepts a visitor for processing this message.
      *

@@ -1,10 +1,10 @@
 package client.network;
 
 import com.jme3.network.*;
-import model.client.message.ClientMessage;
-import model.client.message.ServerMessageReceiver;
+import model.general.message.client.ClientMessage;
+import model.general.message.client.ServerMessageReceiver;
 import model.client.notification.GameEventBroker;
-import model.server.message.ServerMessage;
+import model.general.message.server.ServerMessage;
 
 import java.io.IOException;
 

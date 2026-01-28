@@ -1,17 +1,14 @@
 package server;
 
-import client.WordleApp;
 import com.jme3.app.SimpleApplication;
 import com.jme3.network.*;
 import com.jme3.network.serializing.Serializer;
-import com.jme3.network.serializing.serializers.EnumSerializer;
 import com.jme3.system.JmeContext;
-import model.client.message.*;
-import model.general.config.CharacterPosition;
+import model.general.message.client.*;
+import model.general.message.server.*;
 import model.server.Player;
 import model.server.config.ServerGameConfig;
 import model.server.logic.ServerGameLogic;
-import model.server.message.*;
 import server.network.ReceivedMessage;
 import server.network.ServerSender;
 

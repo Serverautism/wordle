@@ -1,6 +1,6 @@
-package model.server.message;
+package model.general.message.server;
 
-import model.client.message.*;
+import model.general.message.client.*;
 
 /**
  * Visitor interface for processing all client messages.

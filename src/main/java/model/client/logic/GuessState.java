@@ -1,11 +1,10 @@
 package model.client.logic;
 
 import model.client.Feature;
-import model.client.message.GuessMessage;
-import model.client.message.StatsRequestMessage;
+import model.general.message.client.GuessMessage;
 import model.client.notification.*;
 import model.general.config.CharacterPosition;
-import model.server.message.GuessResponse;
+import model.general.message.server.GuessResponse;
 
 import java.util.EnumSet;
 import java.util.Set;

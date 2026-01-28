@@ -1,10 +1,10 @@
-package model.server.message;
+package model.general.message.server;
 
 import com.jme3.network.serializing.Serializable;
-import model.client.message.ServerMessageInterpreter;
+import model.general.message.client.ServerMessageInterpreter;
 
 @Serializable
-public class ConnectionResponse extends ServerMessage{
+public class LoginResponse extends ServerMessage {
     /**
      * Accepts a visitor for processing this message.
      *

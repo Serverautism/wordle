@@ -1,9 +1,9 @@
 package model.server.logic;
 
-import model.client.message.*;
+import model.general.message.client.*;
 import model.server.Player;
-import model.server.message.ClientMessageInterpreter;
-import model.server.message.ServerMessage;
+import model.general.message.server.ClientMessageInterpreter;
+import model.general.message.server.ServerMessage;
 import server.network.ServerSender;
 
 /**

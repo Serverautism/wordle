@@ -1,6 +1,6 @@
 package model.server.logic;
 
-import model.client.message.ClientMessage;
+import model.general.message.client.ClientMessage;
 import model.server.Player;
 import model.server.config.ServerGameConfig;
 import server.network.ServerSender;

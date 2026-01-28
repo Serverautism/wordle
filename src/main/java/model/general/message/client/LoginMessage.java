@@ -1,7 +1,7 @@
-package model.client.message;
+package model.general.message.client;
 
 import com.jme3.network.serializing.Serializable;
-import model.server.message.ClientMessageInterpreter;
+import model.general.message.server.ClientMessageInterpreter;
 
 /**
  * Message sent to server when trying to authenticate

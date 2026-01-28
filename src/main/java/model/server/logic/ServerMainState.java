@@ -1,11 +1,11 @@
 package model.server.logic;
 
-import model.client.message.GuessMessage;
-import model.client.message.LoginMessage;
-import model.client.message.StartGameMessage;
-import model.client.message.StatsRequestMessage;
+import model.general.message.client.GuessMessage;
+import model.general.message.client.LoginMessage;
+import model.general.message.client.StartGameMessage;
+import model.general.message.client.StatsRequestMessage;
+import model.general.message.server.*;
 import model.server.Player;
-import model.server.message.*;
 
 import java.util.ArrayList;
 
