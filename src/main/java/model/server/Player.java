@@ -1,12 +1,14 @@
 package model.server;
 
+import model.general.dto.StatsProvider;
+
 import java.io.File;
 import java.io.IOException;
 
 /**
  * Represents a game participant on the server side, holding a unique connection ID and a display name.
  */
-public class Player {
+public class Player implements StatsProvider {
     static final System.Logger LOGGER = System.getLogger(Player.class.getName());
 
     /**

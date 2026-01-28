@@ -4,6 +4,7 @@ import client.network.ClientNetworkSupport;
 import com.jme3.app.DebugKeysAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
+import com.jme3.asset.plugins.FileLocator;
 import com.jme3.font.BitmapFont;
 import com.jme3.system.AppSettings;
 import model.client.Feature;
@@ -120,6 +121,7 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
         setPauseOnLostFocus(false);
         inputManager.deleteMapping(INPUT_MAPPING_EXIT);
         inputManager.setCursorVisible(false);
+        assetManager.registerLocator("assets", FileLocator.class);
         setupStates();
     }
 
@@ -129,11 +131,11 @@ public class WordleApp extends SimpleApplication implements ServerMessageReceive
      * and optionally attaches statistics and debugging states if enabled in the configuration.
      */
     private void setupStates() {
-        if (config.isShowStatistics()) {
-            final BitmapFont normalFont = assetManager.loadFont("Interface\\Fonts\\Default.png");
-            final StatsAppState stats = new StatsAppState(guiNode, normalFont);
-            stateManager.attach(stats);
-        }
+//        if (config.isShowStatistics()) {
+//            final BitmapFont normalFont = assetManager.loadFont("Interface\\Fonts\\Default.png");
+//            final StatsAppState stats = new StatsAppState(guiNode, normalFont);
+//            stateManager.attach(stats);
+//        }
         flyCam.setEnabled(false);
         stateManager.detach(stateManager.getState(StatsAppState.class));
         stateManager.detach(stateManager.getState(DebugKeysAppState.class));

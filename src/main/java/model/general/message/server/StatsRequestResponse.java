@@ -1,6 +1,7 @@
 package model.general.message.server;
 
 import com.jme3.network.serializing.Serializable;
+import model.general.dto.StatsProvider;
 import model.general.message.client.ServerMessageInterpreter;
 import model.server.Player;
 
@@ -52,11 +53,11 @@ public class StatsRequestResponse extends ServerMessage {
     private StatsRequestResponse() {}
 
     /**
-     * Constructs a new StatsRequestResponse containing information about the give Player
+     * Constructs a new StatsRequestResponse containing information about the given stats provider
      *
-     * @param player the provided player
+     * @param player the provided stats provider
      */
-    public StatsRequestResponse(Player player) {
+    public StatsRequestResponse(StatsProvider player) {
         alias = player.getAlias();
         lastPlayDate = player.getLastPlayDate();
         score = player.getScore();
