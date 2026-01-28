@@ -109,11 +109,13 @@ public class StatsAppState extends GameAppState implements GameEventListener {
         Node distributionNode = new Node("distribution");
 
         int sum = Arrays.stream(guessDistribution).sum();
+        int biggestAmount = Arrays.stream(guessDistribution).max().orElse(0);
+        float x = getApp().getConfig().getResolutionWidth() / 8f;
         float y = getApp().getConfig().getResolutionHeight() - ((float) getApp().getConfig().getResolutionHeight() / 2);
         int index = 1;
         for (int i : guessDistribution) {
-            Node row = createDistributionRow(index, i, sum);
-            row.setLocalTranslation(50, y - index * (BAR_HEIGHT + BAR_GAP), 0);
+            Node row = createDistributionRow(index, i, biggestAmount, sum);
+            row.setLocalTranslation(x, y - index * (BAR_HEIGHT + BAR_GAP), 0);
             distributionNode.attachChild(row);
             index += 1;
         }
@@ -122,8 +124,8 @@ public class StatsAppState extends GameAppState implements GameEventListener {
         distributionNode.setLocalTranslation(0, 0, 1);
     }
 
-    private Node createDistributionRow(int guess, int amount, int sum) {
-        float sideGap = getApp().getConfig().getResolutionWidth() * .05f;
+    private Node createDistributionRow(int guess, int amount, int biggestAmount, int sum) {
+        float sideGap = getApp().getConfig().getResolutionWidth() / 8f;
         Node result = new Node("Row");
 
         BitmapText text = createText(32, "" + guess, ColorRGBA.Black);
@@ -131,7 +133,8 @@ public class StatsAppState extends GameAppState implements GameEventListener {
         result.attachChild(text);
 
         float totalRowSpace = getApp().getConfig().getResolutionWidth() - sideGap * 2 - 50;
-        int barLength = Math.round(totalRowSpace * ((float) amount / sum));
+        float factor = totalRowSpace / (totalRowSpace * ((float) biggestAmount / sum));
+        int barLength = Math.round(totalRowSpace * ((float) amount / sum)  * factor);
         Geometry bar = createQuad(barLength, 20, GREEN);
         bar.setLocalTranslation(10, -BAR_HEIGHT / 3f, 0);
         result.attachChild(bar);

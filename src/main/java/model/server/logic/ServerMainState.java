@@ -73,10 +73,10 @@ public class ServerMainState extends ServerState {
             return;
         }
         if (!(sender.getLastPlayDate() == logic.getWordleEngine().getCurrentPlayDay())) {
-            LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started first game of the day: {2}", id, sender.getName(), sender.getCurrentAnswer());
             sender.setLastPlayDate(logic.getWordleEngine().getCurrentPlayDay());
             sender.startGame(logic.getWordleEngine().getCurrentWord(), 6);
             sender.setDailyOrRandom(true, logic.getConfig().getPointsDaily());
+            LOGGER.log(System.Logger.Level.WARNING, "Client {0} with name {1} started first game of the day: {2}", id, sender.getName(), sender.getCurrentAnswer());
         } else {
             sender.startGame(logic.getWordleEngine().getRandomWord(), 6);
             sender.setDailyOrRandom(false, logic.getConfig().getPointsRandom());

@@ -2,11 +2,18 @@
   "name": "adam",
   "alias": "serverautism",
   "password": "12345678",
-  "lastPlayDate": 0,
-  "score": 0,
-  "streak": 0,
-  "maxStreak": 0,
-  "wordlesSolved": 0,
+  "lastPlayDate": 20481,
+  "score": 10,
+  "streak": 1,
+  "maxStreak": 1,
+  "wordlesSolved": 1,
   "wordlesLost": 0,
-  "guessDistribution": [0, 0, 0, 0, 0, 0]
+  "guessDistribution": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
 }
